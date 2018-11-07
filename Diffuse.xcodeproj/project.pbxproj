@@ -11,6 +11,7 @@
 		08D8B2C22192D8C500EA22CC /* DiffuseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2C12192D8C500EA22CC /* DiffuseTests.swift */; };
 		08D8B2C42192D8C500EA22CC /* Diffuse.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D8B2B62192D8C500EA22CC /* Diffuse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08D8B2E32192E0FA00EA22CC /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2E02192E0F900EA22CC /* Change.swift */; };
+		08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 		08D8B2C12192D8C500EA22CC /* DiffuseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseTests.swift; sourceTree = "<group>"; };
 		08D8B2C32192D8C500EA22CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08D8B2E02192E0F900EA22CC /* Change.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Change.swift; sourceTree = "<group>"; };
+		08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionChanges.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				08D8B2E02192E0F900EA22CC /* Change.swift */,
+				08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08D8B2E32192E0FA00EA22CC /* Change.swift in Sources */,
+				08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
