@@ -58,8 +58,7 @@ public struct Diffuse<T> where T: Equatable {
         let indices = {
             updatedEnumerated.map { updated -> [(from: Int, to: Int)] in
                 oldEnumerated
-                    .filter { comparator($0.element, updated.element) }
-                    .filter { $0.offset != updated.offset }
+                    .filter { comparator($0.element, updated.element) && $0.offset != updated.offset }
                     .map { (from: $0.offset, to: updated.offset) }
                 }.flatMap { $0 }
         }()
@@ -75,8 +74,7 @@ public struct Diffuse<T> where T: Equatable {
         let indices = {
             updatedEnumerated.map { updated -> [Int] in
                 oldEnumerated
-                    .filter { comparator($0.element, updated.element) }
-                    .filter { $0.element != updated.element }
+                    .filter { comparator($0.element, updated.element) && $0.element != updated.element }
                     .map { _ in updated.offset }
                 }.flatMap { $0 }
         }()
