@@ -94,8 +94,7 @@
 		08D8B2DE2192E0ED00EA22CC /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				08D8B2E02192E0F900EA22CC /* Change.swift */,
-				08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */,
+				08D8B2E82192E38500EA22CC /* Models */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -106,6 +105,15 @@
 				08D8B2E62192E10700EA22CC /* UITableViewExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		08D8B2E82192E38500EA22CC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				08D8B2E02192E0F900EA22CC /* Change.swift */,
+				08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
