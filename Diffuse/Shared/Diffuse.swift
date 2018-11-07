@@ -5,15 +5,15 @@
 import Foundation
 
 public struct Diffuse<T> where T: Equatable {
-    typealias ItemComparator = (T, T) -> Bool
+    public typealias ItemComparator = (T, T) -> Bool
 
     private init() {}
 
-    static func diff(old: [T], updated: [T]) -> CollectionChanges {
+    public static func diff(old: [T], updated: [T]) -> CollectionChanges {
         return self.diff(old: old, updated: updated, comparator: {(itemA, itemB) in itemA == itemB})
     }
 
-    static func diff(old: [T], updated: [T], comparator: ItemComparator) -> CollectionChanges {
+    public static func diff(old: [T], updated: [T], comparator: ItemComparator) -> CollectionChanges {
         let inserted = insertedItems(old: old, updated: updated, comparator: comparator)
         let removed = removedItems(old: old, updated: updated, comparator: comparator)
         let moved = movedItems(old: old, updated: updated, comparator: comparator)
