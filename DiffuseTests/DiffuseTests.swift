@@ -117,7 +117,7 @@ class DiffuseTests: XCTestCase {
 
     // MARK: - Multiple operations
 
-    func testMultipleOperations_withCustomComparator() {
+    func testMultipleOperations_withCustomComparator() {
         let objectA = Object(id: 0, name: "A")
         var objectB = Object(id: 1, name: "B")
         let objectC = Object(id: 2, name: "C")
