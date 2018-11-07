@@ -10,6 +10,7 @@
 		08D8B2BD2192D8C500EA22CC /* Diffuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D8B2B32192D8C500EA22CC /* Diffuse.framework */; };
 		08D8B2C22192D8C500EA22CC /* DiffuseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2C12192D8C500EA22CC /* DiffuseTests.swift */; };
 		08D8B2C42192D8C500EA22CC /* Diffuse.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D8B2B62192D8C500EA22CC /* Diffuse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		08D8B2E32192E0FA00EA22CC /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2E02192E0F900EA22CC /* Change.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		08D8B2BC2192D8C500EA22CC /* DiffuseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiffuseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08D8B2C12192D8C500EA22CC /* DiffuseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseTests.swift; sourceTree = "<group>"; };
 		08D8B2C32192D8C500EA22CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		08D8B2E02192E0F900EA22CC /* Change.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Change.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				08D8B2B62192D8C500EA22CC /* Diffuse.h */,
 				08D8B2B72192D8C500EA22CC /* Info.plist */,
+				08D8B2DE2192E0ED00EA22CC /* Shared */,
 			);
 			path = Diffuse;
 			sourceTree = "<group>";
@@ -84,6 +87,22 @@
 				08D8B2C32192D8C500EA22CC /* Info.plist */,
 			);
 			path = DiffuseTests;
+			sourceTree = "<group>";
+		};
+		08D8B2DE2192E0ED00EA22CC /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				08D8B2E02192E0F900EA22CC /* Change.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		08D8B2E52192E0FD00EA22CC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				08D8B2E62192E10700EA22CC /* UITableViewExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08D8B2E32192E0FA00EA22CC /* Change.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
