@@ -5,7 +5,7 @@
 import Foundation
 
 public struct CollectionChanges {
-    private(set) var allChanges: [Change]
+    public private(set) var allChanges: [Change]
 
     public var inserted: [Change] {
         return allChanges.filter { change in
