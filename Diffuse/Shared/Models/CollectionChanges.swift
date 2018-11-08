@@ -7,7 +7,7 @@ import Foundation
 public struct CollectionChanges {
     private(set) var allChanges: [Change]
 
-    var inserted: [Change] {
+    public var inserted: [Change] {
         return allChanges.filter { change in
             switch change {
             case .insert(at: _): return true
@@ -16,7 +16,7 @@ public struct CollectionChanges {
         }
     }
 
-    var removed: [Change] {
+    public var removed: [Change] {
         return allChanges.filter { change in
             switch change {
             case .remove(from: _): return true
@@ -25,7 +25,7 @@ public struct CollectionChanges {
         }
     }
 
-    var moved: [Change] {
+    public var moved: [Change] {
         return allChanges.filter { change in
             switch change {
             case .move(from: _, to: _): return true
@@ -34,7 +34,7 @@ public struct CollectionChanges {
         }
     }
 
-    var updated: [Change] {
+    public var updated: [Change] {
         return allChanges.filter { change in
             switch change {
             case .updated(at: _): return true
