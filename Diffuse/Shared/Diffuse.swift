@@ -74,7 +74,7 @@ public struct Diffuse<T> where T: Equatable {
             updatedEnumerated.map { updated -> Int? in
                 oldEnumerated
                     .first { comparator($0.element, updated.element) && $0.element != updated.element }
-                    .map { $0.offset }
+                    .map { _ in updated.offset }
                 }.flatMap { $0 }
         }()
 
