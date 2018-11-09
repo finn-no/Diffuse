@@ -7,13 +7,6 @@ jobs:
     steps:
       - checkout
       - run: xcodebuild -project Diffuse.xcodeproj -scheme "Diffuse" -sdk iphonesimulator -destination 'platform=iOS Simulator,OS=12.0,name=iPhone X' build test | xcpretty
-  
-  swiftlint:
-    docker:
-      - image: dantoml/swiftlint:latest
-    steps:
-      - checkout
-      - run: swiftlint lint
 
 workflows:
   version: 2
