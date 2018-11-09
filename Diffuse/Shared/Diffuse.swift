@@ -56,10 +56,10 @@ public struct Diffuse<T> where T: Equatable {
 
         // Find indices which exists in both `oldItems` and `updatedItems`, but have a different index.
         let indices = {
-            updatedEnumerated.map { updated -> [(from: Int, to: Int)] in
+            updatedEnumerated.map { updated -> (from: Int, to: Int)? in
                 oldEnumerated
-                    .map { (comparator($0.element, updated.element) && $0.offset != updated.offset) ? (from: $0.offset, to: updated.offset) : nil }
-                    .flatMap { $0 }
+                    .first { comparator($0.element, updated.element) && $0.offset != updated.offset }
+                    .map { (from: $0.offset, to: updated.offset) }
                 }.flatMap { $0 }
         }()
         return indices.map { Change.move(from: $0.from, to: $0.to) }
@@ -71,10 +71,10 @@ public struct Diffuse<T> where T: Equatable {
 
         // Find indices where `comparator` returns `true`, but the elements themselves don't match.
         let indices = {
-            updatedEnumerated.map { updated -> [Int] in
+            updatedEnumerated.map { updated -> Int? in
                 oldEnumerated
-                    .map { (comparator($0.element, updated.element) && $0.element != updated.element) ? updated.offset : nil }
-                    .flatMap { $0 }
+                    .first { comparator($0.element, updated.element) && $0.element != updated.element }
+                    .map { $0.offset }
                 }.flatMap { $0 }
         }()
 
