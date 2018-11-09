@@ -10,7 +10,7 @@ public struct CollectionChanges {
     public var inserted: [Change] {
         return allChanges.filter { change in
             switch change {
-            case .insert(at: _): return true
+            case .insert(row: _): return true
             default: return false
             }
         }
@@ -19,7 +19,7 @@ public struct CollectionChanges {
     public var removed: [Change] {
         return allChanges.filter { change in
             switch change {
-            case .remove(from: _): return true
+            case .remove(row: _): return true
             default: return false
             }
         }
@@ -28,7 +28,7 @@ public struct CollectionChanges {
     public var moved: [Change] {
         return allChanges.filter { change in
             switch change {
-            case .move(from: _, to: _): return true
+            case .move(fromRow: _, toRow: _): return true
             default: return false
             }
         }
@@ -37,7 +37,7 @@ public struct CollectionChanges {
     public var updated: [Change] {
         return allChanges.filter { change in
             switch change {
-            case .updated(at: _): return true
+            case .updated(row: _): return true
             default: return false
             }
         }

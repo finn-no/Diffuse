@@ -5,8 +5,8 @@
 import Foundation
 
 public enum Change {
-    case insert(at: Int)
-    case remove(from: Int)
-    case move(from: Int, to: Int)
-    case updated(at: Int)
+    case insert(row: Int)
+    case remove(row: Int)
+    case move(fromRow: Int, toRow: Int)
+    case updated(row: Int)
 }

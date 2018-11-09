@@ -7,7 +7,7 @@ import XCTest
 
 class DiffuseTests: XCTestCase {
     struct Object: Equatable {
-        let id: Int
+        let objId: Int
         var name: String
     }
 
@@ -56,7 +56,7 @@ class DiffuseTests: XCTestCase {
 
     func createObjects() -> [Object] {
         let names = ["A", "B", "C", "D"]
-        return names.enumerated().map { Object(id: $0.offset, name: $0.element)}
+        return names.enumerated().map { Object(objId: $0.offset, name: $0.element)}
     }
 
     func testInsert_withCustomComparator() {
@@ -66,14 +66,14 @@ class DiffuseTests: XCTestCase {
         var updated = objects
 
         // Insert 2 new Objects. One at index 1, and one at the end.
-        updated.insert(Object(id: 4, name: "E"), at: 1)
-        updated.append(Object(id: 5, name: "F"))
+        updated.insert(Object(objId: 4, name: "E"), at: 1)
+        updated.append(Object(objId: 5, name: "F"))
 
-        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.id == $1.id })
+        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.objId == $1.objId })
 
         XCTAssertEqual(2, changes.inserted.count)
 
-        // `ObjectE` is inserted at index `1`, which means three items (`ObjectB`, `ObjectC` and `ObjectD`) have been pushed/moved.
+        // `E` is inserted at index `1`, which means three items (`B`, `C` and `D`) have been pushed/moved.
         // The total number of changes should equal 5.
         XCTAssertEqual(5, changes.allChanges.count)
         XCTAssertEqual(3, changes.moved.count)
@@ -89,11 +89,11 @@ class DiffuseTests: XCTestCase {
         updated.remove(at: 1)
         updated.remove(at: 1)
 
-        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.id == $1.id })
+        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.objId == $1.objId })
 
         XCTAssertEqual(2, changes.removed.count)
 
-        // Two objects (`ObjectB` and `ObjectC`) are removed, which also means one item (`ObjectD`) have been pulled/moved.
+        // Two objects (`B` and `C`) are removed, which also means one item (`D`) have been pulled/moved.
         // The total number of changes should equal 3.
         XCTAssertEqual(3, changes.allChanges.count)
         XCTAssertEqual(1, changes.moved.count)
@@ -109,7 +109,7 @@ class DiffuseTests: XCTestCase {
         updated[1].name = "New name"
         updated[3].name = "New name"
 
-        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.id == $1.id })
+        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.objId == $1.objId })
 
         XCTAssertEqual(2, changes.updated.count)
         XCTAssertEqual(2, changes.allChanges.count)
@@ -118,27 +118,27 @@ class DiffuseTests: XCTestCase {
     // MARK: - Multiple operations
 
     func testMultipleOperations_withCustomComparator() {
-        let objectA = Object(id: 0, name: "A")
-        var objectB = Object(id: 1, name: "B")
-        let objectC = Object(id: 2, name: "C")
-        let objectD = Object(id: 3, name: "D")
-        let objectE = Object(id: 4, name: "E")
-        let objectF = Object(id: 5, name: "F")
+        let objectA = Object(objId: 0, name: "A")
+        var objectB = Object(objId: 1, name: "B")
+        let objectC = Object(objId: 2, name: "C")
+        let objectD = Object(objId: 3, name: "D")
+        let objectE = Object(objId: 4, name: "E")
+        let objectF = Object(objId: 5, name: "F")
 
         let old = [objectA, objectB, objectC]
 
         // Remove `ObjectA`
-        //      = 1 change (remove + pull/move `ObjectB` to index 0)
-        // Update `ObjectB`
+        //      = 1 change (remove + pull/move `B` to index 0)
+        // Update `B`
         //      = 1 change
-        // Insert `ObjectD` and `ObjectE` before `ObjectC`
-        //      = 3 changes (2 inserts + push/move `ObjectC`)
-        // Insert `ObjectF` after `ObjectC`
+        // Insert `D` and `E` before `C`
+        //      = 3 changes (2 inserts + push/move `C`)
+        // Insert `F` after `C`
         //      = 1 change
         objectB.name = "New name"
         let updated = [objectB, objectD, objectE, objectC, objectF]
 
-        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.id == $1.id })
+        let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.objId == $1.objId })
 
         XCTAssertEqual(7, changes.allChanges.count)
         XCTAssertEqual(3, changes.inserted.count)
