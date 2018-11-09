@@ -35,22 +35,27 @@ public struct Diffuse<T> where T: Equatable {
             // INSERTED - Find indices which are represented in `updatedItems`, but not in `oldItems`.
             if !oldEnumerated.contains(where: { comparator($0.element, updated.element) }) {
                 insertedItems.append(Change.insert(at: updated.offset))
+
+                // If an item is inserted, it will definitely not be either modified or updated. Skip to next iteration.
                 continue
             }
 
             for old in oldEnumerated {
+                // Stop iterating `oldEnumerated` if we know the element is both updated and moved.
                 if foundUpdated && foundMoved { break }
 
-                // MOVED - Find indices which exists in both `oldItems` and `updatedItems`, but have a different index.
-                if !foundMoved && comparator(old.element, updated.element) && old.offset != updated.offset {
-                    movedItems.append(.move(from: old.offset, to: updated.offset))
-                    foundMoved = true
-                }
+                if comparator(old.element, updated.element) {
+                    // MOVED - Find indices which exists in both `oldItems` and `updatedItems`, but have a different index.
+                    if !foundMoved && old.offset != updated.offset {
+                        movedItems.append(.move(from: old.offset, to: updated.offset))
+                        foundMoved = true
+                    }
 
-                // UPDATED - Find indices where `comparator` returns `true`, but the elements themselves don't match.
-                if !foundUpdated && comparator(old.element, updated.element) && old.element != updated.element {
-                    updatedItems.append(.updated(at: updated.offset))
-                    foundUpdated = true
+                    // UPDATED - Find indices where `comparator` returns `true`, but the elements themselves don't match.
+                    if !foundUpdated && old.element != updated.element {
+                        updatedItems.append(.updated(at: updated.offset))
+                        foundUpdated = true
+                    }
                 }
             }
         }
