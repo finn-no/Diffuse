@@ -23,11 +23,11 @@ let updated = [1, 3, 4]
 let changes = Diffuse.diff(old: old, updated: updated)
 
 // Result
-changes.allChanges 	// [.insert(at: 2), .remove(from: 1), .move(from: 2, to: 1)]
+changes.allChanges 	// [.insert(row: 2), .remove(row: 1), .move(fromRow: 2, toRow: 1)]
 
-changes.inserted 	// [.insert(at: 2)]
-changes.removed 	// [.remove(from: 1)]
-changes.moved 		// [.move(from: 2, to: 1)]
+changes.inserted 	// [.insert(row: 2)]
+changes.removed 	// [.remove(row: 1)]
+changes.moved 		// [.move(fromRow: 2, toRow: 1)]
 changes.updated 	// []
 ```
 
@@ -39,8 +39,8 @@ Complex structures may have some form of unique identifier you can use to check 
 ```swift
 // Your datamodel, where `id` is the unique identifier.
 struct Object: Equatable {
-	let id: Int
-	var title: String
+    let id: Int
+    var title: String
 }
 
 // Your old array of objects.
@@ -54,10 +54,10 @@ let updated = [Object(id: 0, title: "New title"), Object(id: 2, title: "C"), Obj
 let changes = Diffuse.diff(old: old, updated: updated, comparator: { $0.id == $1.id })
 
 // Result
-changes.allChanges 	// [.insert(at: 2), .remove(from: 1), .move(from: 2, to: 1), .updated(at: 0)]
+changes.allChanges 	// [.insert(row: 2), .remove(row: 1), .move(fromRow: 2, toRow: 1), .updated(row: 0)]
 
-changes.inserted 	// [.insert(at: 2)]
-changes.removed 	// [.remove(from: 1)]
-changes.moved 		// [.move(from: 2, to: 1)]
-changes.updated 	// [.updated(at: 0)]
+changes.inserted 	// [.insert(row: 2)]
+changes.removed 	// [.remove(row: 1)]
+changes.moved 		// [.move(fromRow: 2, toRow: 1)]
+changes.updated 	// [.updated(row: 0)]
 ```
