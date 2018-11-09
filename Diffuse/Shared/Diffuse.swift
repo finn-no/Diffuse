@@ -14,71 +14,53 @@ public struct Diffuse<T> where T: Equatable {
     }
 
     public static func diff(old: [T], updated: [T], comparator: ItemComparator) -> CollectionChanges {
-        let inserted = insertedItems(old: old, updated: updated, comparator: comparator)
-        let removed = removedItems(old: old, updated: updated, comparator: comparator)
-        let moved = movedItems(old: old, updated: updated, comparator: comparator)
-        let updated = updatedItems(old: old, updated: updated, comparator: comparator)
+        let oldEnumerated = old.enumerated()
+        let updatedEnumerated = updated.enumerated()
 
-        let allChanges = [inserted, removed, moved, updated].flatMap { $0 }
+        var insertedItems = [Change]()
+        var removedItems = [Change]()
+        var updatedItems = [Change]()
+        var movedItems = [Change]()
 
+        // DELETED - Find indices which are represented in `oldItems`, but not in `updatedItems`.
+        for old in oldEnumerated {
+            guard !updatedEnumerated.contains(where: { comparator($0.element, old.element) }) else { continue }
+            removedItems.append(Change.remove(from: old.offset))
+        }
+
+        for updated in updatedEnumerated {
+            var foundMoved = false
+            var foundUpdated = false
+
+            // INSERTED - Find indices which are represented in `updatedItems`, but not in `oldItems`.
+            if !oldEnumerated.contains(where: { comparator($0.element, updated.element) }) {
+                insertedItems.append(Change.insert(at: updated.offset))
+
+                // If an item is inserted, it will definitely not be either modified or updated. Skip to next iteration.
+                continue
+            }
+
+            for old in oldEnumerated {
+                // Stop iterating `oldEnumerated` if we know the element is both updated and moved.
+                if foundUpdated && foundMoved { break }
+
+                if comparator(old.element, updated.element) {
+                    // MOVED - Find indices which exists in both `oldItems` and `updatedItems`, but have a different index.
+                    if !foundMoved && old.offset != updated.offset {
+                        movedItems.append(.move(from: old.offset, to: updated.offset))
+                        foundMoved = true
+                    }
+
+                    // UPDATED - Find indices where `comparator` returns `true`, but the elements themselves don't match.
+                    if !foundUpdated && old.element != updated.element {
+                        updatedItems.append(.updated(at: updated.offset))
+                        foundUpdated = true
+                    }
+                }
+            }
+        }
+
+        let allChanges = [insertedItems, removedItems, updatedItems, movedItems].flatMap { $0 }
         return CollectionChanges(allChanges: allChanges)
-    }
-
-    private static func insertedItems(old oldItems: [T], updated updatedItems: [T], comparator: ItemComparator) -> [Change] {
-        let updatedEnumerated = updatedItems.enumerated()
-
-        // Find indices which are represented in `updatedItems`, but not in `oldItems`.
-        let indices =  {
-            updatedEnumerated
-                .filter { updated in !oldItems.contains { comparator($0, updated.element) }}
-                .map { updated in updated.offset }
-        }()
-
-        return indices.map { Change.insert(at: $0) }
-    }
-
-    private static func removedItems(old oldItems: [T], updated updatedItems: [T], comparator: ItemComparator) -> [Change] {
-        let oldEnumerated = oldItems.enumerated()
-
-        // Find indices which are represented in `oldItems`, but not in `updatedItems`.
-        let indices =  {
-            oldEnumerated
-                .filter { old in !updatedItems.contains { comparator($0, old.element) }}
-                .map { old in old.offset }
-        }()
-
-        return indices.map { Change.remove(from: $0) }
-    }
-
-    private static func movedItems(old oldItems: [T], updated updatedItems: [T], comparator: ItemComparator) -> [Change] {
-        let oldEnumerated = oldItems.enumerated()
-        let updatedEnumerated = updatedItems.enumerated()
-
-        // Find indices which exists in both `oldItems` and `updatedItems`, but have a different index.
-        let indices = {
-            updatedEnumerated.map { updated -> [(from: Int, to: Int)] in
-                oldEnumerated
-                    .filter { comparator($0.element, updated.element) && $0.offset != updated.offset }
-                    .map { (from: $0.offset, to: updated.offset) }
-                }.flatMap { $0 }
-        }()
-
-        return indices.map { Change.move(from: $0.from, to: $0.to) }
-    }
-
-    private static func updatedItems(old oldItems: [T], updated updatedItems: [T], comparator: ItemComparator) -> [Change] {
-        let oldEnumerated = oldItems.enumerated()
-        let updatedEnumerated = updatedItems.enumerated()
-
-        // Find indices where `comparator` returns `true`, but the elements themselves don't match.
-        let indices = {
-            updatedEnumerated.map { updated -> [Int] in
-                oldEnumerated
-                    .filter { comparator($0.element, updated.element) && $0.element != updated.element }
-                    .map { _ in updated.offset }
-                }.flatMap { $0 }
-        }()
-
-        return indices.map { Change.updated(at: $0) }
     }
 }
