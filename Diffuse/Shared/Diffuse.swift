@@ -28,10 +28,10 @@ public struct Diffuse<T> where T: Equatable {
         let updatedEnumerated = updatedItems.enumerated()
 
         // Find indices which are represented in `updatedItems`, but not in `oldItems`.
-        let indices =  {
+        let indices = {
             updatedEnumerated
-                .filter { updated in !oldItems.contains { comparator($0, updated.element) }}
-                .map { updated in updated.offset }
+                .map { updated in !oldItems.contains { comparator($0, updated.element) } ? updated.offset : nil }
+                .flatMap { $0 }
         }()
 
         return indices.map { Change.insert(at: $0) }
@@ -41,10 +41,10 @@ public struct Diffuse<T> where T: Equatable {
         let oldEnumerated = oldItems.enumerated()
 
         // Find indices which are represented in `oldItems`, but not in `updatedItems`.
-        let indices =  {
+        let indices = {
             oldEnumerated
-                .filter { old in !updatedItems.contains { comparator($0, old.element) }}
-                .map { old in old.offset }
+                .map { old in !updatedItems.contains { comparator($0, old.element) } ? old.offset : nil }
+                .flatMap { $0 }
         }()
 
         return indices.map { Change.remove(from: $0) }
@@ -58,11 +58,10 @@ public struct Diffuse<T> where T: Equatable {
         let indices = {
             updatedEnumerated.map { updated -> [(from: Int, to: Int)] in
                 oldEnumerated
-                    .filter { comparator($0.element, updated.element) && $0.offset != updated.offset }
-                    .map { (from: $0.offset, to: updated.offset) }
+                    .map { (comparator($0.element, updated.element) && $0.offset != updated.offset) ? (from: $0.offset, to: updated.offset) : nil }
+                    .flatMap { $0 }
                 }.flatMap { $0 }
         }()
-
         return indices.map { Change.move(from: $0.from, to: $0.to) }
     }
 
@@ -74,8 +73,8 @@ public struct Diffuse<T> where T: Equatable {
         let indices = {
             updatedEnumerated.map { updated -> [Int] in
                 oldEnumerated
-                    .filter { comparator($0.element, updated.element) && $0.element != updated.element }
-                    .map { _ in updated.offset }
+                    .map { (comparator($0.element, updated.element) && $0.element != updated.element) ? updated.offset : nil }
+                    .flatMap { $0 }
                 }.flatMap { $0 }
         }()
 
