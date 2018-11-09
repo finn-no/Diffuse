@@ -25,7 +25,7 @@ public struct Diffuse<T> where T: Equatable {
         // DELETED - Find indices which are represented in `oldItems`, but not in `updatedItems`.
         for old in oldEnumerated {
             guard !updatedEnumerated.contains(where: { comparator($0.element, old.element) }) else { continue }
-            removedItems.append(Change.remove(from: old.offset))
+            removedItems.append(Change.remove(row: old.offset))
         }
 
         for updated in updatedEnumerated {
@@ -34,7 +34,7 @@ public struct Diffuse<T> where T: Equatable {
 
             // INSERTED - Find indices which are represented in `updatedItems`, but not in `oldItems`.
             if !oldEnumerated.contains(where: { comparator($0.element, updated.element) }) {
-                insertedItems.append(Change.insert(at: updated.offset))
+                insertedItems.append(Change.insert(row: updated.offset))
 
                 // If an item is inserted, it will definitely not be either modified or updated. Skip to next iteration.
                 continue
@@ -45,15 +45,17 @@ public struct Diffuse<T> where T: Equatable {
                 if foundUpdated && foundMoved { break }
 
                 if comparator(old.element, updated.element) {
-                    // MOVED - Find indices which exists in both `oldItems` and `updatedItems`, but have a different index.
+                    // MOVED - Find elements which exists in both `oldItems` and `updatedItems`, but have
+                    // a different index.
                     if !foundMoved && old.offset != updated.offset {
-                        movedItems.append(.move(from: old.offset, to: updated.offset))
+                        movedItems.append(.move(fromRow: old.offset, toRow: updated.offset))
                         foundMoved = true
                     }
 
-                    // UPDATED - Find indices where `comparator` returns `true`, but the elements themselves don't match.
+                    // UPDATED - Find elements where `comparator` returns `true`, but the elements themselves
+                    // don't match.
                     if !foundUpdated && old.element != updated.element {
-                        updatedItems.append(.updated(at: updated.offset))
+                        updatedItems.append(.updated(row: updated.offset))
                         foundUpdated = true
                     }
                 }

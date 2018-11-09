@@ -8,10 +8,10 @@ import XCTest
 class CollectionChangesTests: XCTestCase {
     func testFiltering() {
         let changes: [Change] = [
-            .insert(at: 0),
-            .remove(from: 0), .remove(from: 0),
-            .move(from: 0, to: 0), .move(from: 0, to: 0), .move(from: 0, to: 0),
-            .updated(at: 0), .updated(at: 0), .updated(at: 0), .updated(at: 0)]
+            .insert(row: 0),
+            .remove(row: 0), .remove(row: 0),
+            .move(fromRow: 0, toRow: 0), .move(fromRow: 0, toRow: 0), .move(fromRow: 0, toRow: 0),
+            .updated(row: 0), .updated(row: 0), .updated(row: 0), .updated(row: 0)]
 
         let collectionChanges = CollectionChanges(allChanges: changes)
 
