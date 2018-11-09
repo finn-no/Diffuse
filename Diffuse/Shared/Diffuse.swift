@@ -28,26 +28,26 @@ public struct Diffuse<T> where T: Equatable {
         let updatedEnumerated = updatedItems.enumerated()
 
         // Find indices which are represented in `updatedItems`, but not in `oldItems`.
-        let indices = {
-            updatedEnumerated
-                .map { updated in !oldItems.contains { comparator($0, updated.element) } ? updated.offset : nil }
-                .flatMap { $0 }
-        }()
+        var indices = [Change]()
+        for updated in updatedEnumerated {
+            guard !oldItems.contains(where: { comparator($0, updated.element) }) else { continue }
+            indices.append(Change.insert(at: updated.offset))
+        }
 
-        return indices.map { Change.insert(at: $0) }
+        return indices
     }
 
     private static func removedItems(old oldItems: [T], updated updatedItems: [T], comparator: ItemComparator) -> [Change] {
         let oldEnumerated = oldItems.enumerated()
 
         // Find indices which are represented in `oldItems`, but not in `updatedItems`.
-        let indices = {
-            oldEnumerated
-                .map { old in !updatedItems.contains { comparator($0, old.element) } ? old.offset : nil }
-                .flatMap { $0 }
-        }()
+        var indices = [Change]()
+        for old in oldEnumerated {
+            guard !updatedItems.contains(where: { comparator($0, old.element) }) else { continue }
+            indices.append(Change.remove(from: old.offset))
+        }
 
-        return indices.map { Change.remove(from: $0) }
+        return indices
     }
 
     private static func movedItems(old oldItems: [T], updated updatedItems: [T], comparator: ItemComparator) -> [Change] {
