@@ -15,7 +15,7 @@ extension UITableView {
                        animations: [Operation: RowAnimation]?,
                        section: Int = 0,
                        updateDataSource: () -> Void) {
-        guard changes.allChanges.count != 0 else { return }
+        guard changes.count != 0 else { return }
         let indexPaths = IndexPathResult(changes: changes, section: section)
 
         let insertAnimation = animations?[.insert] ?? .automatic
