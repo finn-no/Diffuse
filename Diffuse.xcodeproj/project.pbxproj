@@ -96,9 +96,9 @@
 		08D8B2C02192D8C500EA22CC /* DiffuseTests */ = {
 			isa = PBXGroup;
 			children = (
+				08D8B2C32192D8C500EA22CC /* Info.plist */,
 				08D8B2C12192D8C500EA22CC /* DiffuseTests.swift */,
 				08D8B2E92192E3FA00EA22CC /* Models */,
-				08D8B2C32192D8C500EA22CC /* Info.plist */,
 			);
 			path = DiffuseTests;
 			sourceTree = "<group>";
@@ -107,8 +107,8 @@
 			isa = PBXGroup;
 			children = (
 				08D8B2DF2192E0F900EA22CC /* Diffuse.swift */,
-				08D8B2E82192E38500EA22CC /* Models */,
 				08D8B2F921932F9000EA22CC /* IndexPathResult.swift */,
+				08D8B2E82192E38500EA22CC /* Models */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
