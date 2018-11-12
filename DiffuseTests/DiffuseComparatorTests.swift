@@ -17,7 +17,7 @@ class DiffuseComparatorTests: XCTestCase {
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
 
         // Both collections are empty.
-        XCTAssertEqual(0, changes.allChanges.count)
+        XCTAssertEqual(0, changes.count)
     }
 
     // MARK: - Comparing primitives
@@ -28,7 +28,7 @@ class DiffuseComparatorTests: XCTestCase {
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
 
         // Only insertions has occured.
-        XCTAssertEqual(3, changes.allChanges.count)
+        XCTAssertEqual(3, changes.count)
         XCTAssertEqual(3, changes.inserted.count)
     }
 
@@ -38,7 +38,7 @@ class DiffuseComparatorTests: XCTestCase {
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
 
         // Only removals has occured.
-        XCTAssertEqual(3, changes.allChanges.count)
+        XCTAssertEqual(3, changes.count)
         XCTAssertEqual(3, changes.removed.count)
     }
 
@@ -84,7 +84,7 @@ class DiffuseComparatorTests: XCTestCase {
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
 
         // Only insertions has occured.
-        XCTAssertEqual(4, changes.allChanges.count)
+        XCTAssertEqual(4, changes.count)
         XCTAssertEqual(4, changes.inserted.count)
     }
 
@@ -94,7 +94,7 @@ class DiffuseComparatorTests: XCTestCase {
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
 
         // Only removals has occured.
-        XCTAssertEqual(4, changes.allChanges.count)
+        XCTAssertEqual(4, changes.count)
         XCTAssertEqual(4, changes.removed.count)
     }
 
@@ -104,7 +104,7 @@ class DiffuseComparatorTests: XCTestCase {
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
 
         // Both collections are equal, there should be no changes.
-        XCTAssertEqual(0, changes.allChanges.count)
+        XCTAssertEqual(0, changes.count)
     }
 
     func testInsert_withComplexStructure() {
