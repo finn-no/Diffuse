@@ -4,15 +4,15 @@
 
 import UIKit
 
-public enum TableViewOperation {
-    case insert
-    case reload
-    case delete
-}
-
 extension UITableView {
+    public enum Operation {
+        case insert
+        case reload
+        case delete
+    }
+
     public func reload(with changes: CollectionChanges,
-                       animations: [TableViewOperation: UITableView.RowAnimation]?,
+                       animations: [Operation: RowAnimation]?,
                        section: Int = 0,
                        updateDataSource: () -> Void) {
         guard changes.allChanges.count != 0 else { return }
