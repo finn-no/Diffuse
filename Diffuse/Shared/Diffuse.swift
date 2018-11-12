@@ -60,7 +60,8 @@ public struct Diffuse {
         return CollectionChanges(allChanges: allChanges)
     }
 
-    public func diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
+    public static func diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
+        // Early return if either new or old array is empty
         if new.isEmpty {
             let changes = old.enumerated().map({ offset, _ in return Change.remove(row: offset) })
             return CollectionChanges(allChanges: changes)
@@ -77,39 +78,49 @@ public struct Diffuse {
             return Item(value: element, offset: offset, isNew: true)
         })
 
-        /// A set with the elements that are either in the new set or in the old set, but not in both.
-        let difference = Array(newSet.symmetricDifference(oldSet)).sorted(by: { $0.offset < $1.offset })
+        // An array with the elements that are either in the new set or in the old set, but not in both.
+        // Sorted by offset where old items come first.
+        let difference = Array(newSet.symmetricDifference(oldSet)).sorted(by: {
+            if $0.isNew == $1.isNew {
+                return $0.offset < $1.offset
+            }
+            return !$0.isNew && $1.isNew
+        })
+
         var newItems = [Item<T>]()
         var oldChanges = [T: Change]() // [Value: Change]
         var oldValues = [Int: T]() // [Offset: Value]
         var changes = [Change]()
 
-        // Split old and new items
-        for element in difference {
-            if element.isNew {
-                newItems.append(element)
+        // Split old and new items.
+        // Since the array is sorted the old items come first.
+        for item in difference {
+            if item.isNew {
+                if case .remove(let offset)? = oldChanges[item.value] {
+                    // MOVE - if the given value exists both in the new and the old sets of changes
+                    changes.append(.move(fromRow: offset, toRow: item.offset))
+                    oldChanges.removeValue(forKey: item.value)
+                    oldValues.removeValue(forKey: offset)
+                } else {
+                    newItems.append(item)
+                }
             } else {
                 // Assume that the old item has been removed
-                oldChanges[element.value] = .remove(row: element.offset)
+                oldChanges[item.value] = .remove(row: item.offset)
                 // Set value for the given offset
-                oldValues[element.offset] = element.value
+                oldValues[item.offset] = item.value
             }
         }
 
-        for element in newItems {
-            if case .remove(let offset)? = oldChanges[element.value] {
-                // MOVE - if the given value exists both in the new and the old sets of changes
-                changes.append(.move(fromRow: offset, toRow: element.offset))
-                oldChanges.removeValue(forKey: element.value)
-                oldValues.removeValue(forKey: element.offset)
-            } else if let value = oldValues[element.offset] {
+        for item in newItems {
+            if let value = oldValues[item.offset] {
                 // UPDATE - if the given offset exists both in the new and the old sets of changes
-                changes.append(.updated(row: element.offset))
+                changes.append(.updated(row: item.offset))
                 oldChanges.removeValue(forKey: value)
-                oldValues.removeValue(forKey: element.offset)
+                oldValues.removeValue(forKey: item.offset)
             } else {
                 // INSERT - if neither value nor offset exists in the old set of changes
-                changes.append(.insert(row: element.offset))
+                changes.append(.insert(row: item.offset))
             }
         }
 
