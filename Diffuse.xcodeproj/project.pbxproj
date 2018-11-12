@@ -112,7 +112,6 @@
 			isa = PBXGroup;
 			children = (
 				08D8B2DF2192E0F900EA22CC /* Diffuse.swift */,
-				08D8B2F921932F9000EA22CC /* IndexPathResult.swift */,
 				08D8B2E82192E38500EA22CC /* Models */,
 			);
 			path = Shared;
@@ -123,6 +122,7 @@
 			children = (
 				08D8B2E02192E0F900EA22CC /* Change.swift */,
 				08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */,
+				08D8B2F921932F9000EA22CC /* IndexPathResult.swift */,
 				CF8C77B3219989E600E5FC1D /* Item.swift */,
 			);
 			path = Models;
