@@ -11,7 +11,36 @@ class DiffuseComparatorTests: XCTestCase {
         var name: String
     }
 
+    func testEmptyOldEmptyNew() {
+        let old = [Int]()
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Both collections are empty.
+        XCTAssertEqual(0, changes.allChanges.count)
+    }
+
     // MARK: - Primitives
+
+    func testEmptyOld_withPrimitives() {
+        let old = [Int]()
+        let new = [1, 2, 3]
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only insertions has occured.
+        XCTAssertEqual(3, changes.allChanges.count)
+        XCTAssertEqual(3, changes.inserted.count)
+    }
+
+    func testEmptyNew_withPrimitives() {
+        let old = [1, 2, 3]
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only removals has occured.
+        XCTAssertEqual(3, changes.allChanges.count)
+        XCTAssertEqual(3, changes.removed.count)
+    }
 
     func testInsert_withPrimitives() {
         let old = [1, 2, 3]
@@ -48,6 +77,35 @@ class DiffuseComparatorTests: XCTestCase {
     }
 
     // MARK: - Structs and custom comparator
+
+    func testEmptyOld_withCustomComparator() {
+        let old = [Object]()
+        let new = createObjects()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only insertions has occured.
+        XCTAssertEqual(4, changes.allChanges.count)
+        XCTAssertEqual(4, changes.inserted.count)
+    }
+
+    func testEmptyNew_withCustomComparator() {
+        let old = createObjects()
+        let new = [Object]()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only removals has occured.
+        XCTAssertEqual(4, changes.allChanges.count)
+        XCTAssertEqual(4, changes.removed.count)
+    }
+
+    func testEqualCollections_withCustomComparator() {
+        let old = createObjects()
+        let new = createObjects()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Both collections are equal, there should be no changes.
+        XCTAssertEqual(0, changes.allChanges.count)
+    }
 
     func testInsert_withCustomComparator() {
         let objects = createObjects()
