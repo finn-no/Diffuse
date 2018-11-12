@@ -4,18 +4,12 @@
 
 import Foundation
 
-public struct Diffuse<T> where T: Equatable {
-    public typealias ItemComparator = (T, T) -> Bool
-
+public struct Diffuse {
     private init() {}
 
-    public static func diff(old: [T], updated: [T]) -> CollectionChanges {
-        return self.diff(old: old, updated: updated, comparator: {(itemA, itemB) in itemA == itemB})
-    }
-
-    public static func diff(old: [T], updated: [T], comparator: ItemComparator) -> CollectionChanges {
+    public static func diff<T: Equatable>(old: [T], new: [T], comparator: (T, T) -> Bool) -> CollectionChanges {
         let oldEnumerated = old.enumerated()
-        let updatedEnumerated = updated.enumerated()
+        let updatedEnumerated = new.enumerated()
 
         var insertedItems = [Change]()
         var removedItems = [Change]()
