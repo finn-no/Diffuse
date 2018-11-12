@@ -70,7 +70,7 @@ public struct Diffuse {
             return CollectionChanges(allChanges: changes)
         }
 
-        // 2. Map both arrays to sets of `<Item<T>` type.
+        // 2. Map both arrays to sets of `Item<T>` type.
         let oldSet = Set(old.enumerated().map { offset, element in
             return Item(value: element, offset: offset, isNew: false)
         })
