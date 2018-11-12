@@ -5,16 +5,16 @@
 import Foundation
 
 public struct CollectionChanges {
-    public let inserted: [Change]
-    public let removed: [Change]
-    public let moved: [Change]
-    public let updated: [Change]
+    public let inserted: [Int]
+    public let removed: [Int]
+    public let moved: [Move<Int>]
+    public let updated: [Int]
 
-    public var allChanges: [Change] {
-        return inserted + removed + moved + updated
+    public var count: Int {
+        return inserted.count + removed.count + moved.count + updated.count
     }
 
-    public init(inserted: [Change] = [], removed: [Change] = [], moved: [Change] = [], updated: [Change] = []) {
+    public init(inserted: [Int] = [], removed: [Int] = [], moved: [Move<Int>] = [], updated: [Int] = []) {
         self.inserted = inserted
         self.removed = removed
         self.moved = moved
