@@ -4,18 +4,12 @@
 
 import Foundation
 
-public struct Diffuse<T> where T: Equatable {
-    public typealias ItemComparator = (T, T) -> Bool
-
+public struct Diffuse {
     private init() {}
 
-    public static func diff(old: [T], updated: [T]) -> CollectionChanges {
-        return self.diff(old: old, updated: updated, comparator: {(itemA, itemB) in itemA == itemB})
-    }
-
-    public static func diff(old: [T], updated: [T], comparator: ItemComparator) -> CollectionChanges {
+    public static func diff<T: Equatable>(old: [T], new: [T], comparator: (T, T) -> Bool) -> CollectionChanges {
         let oldEnumerated = old.enumerated()
-        let updatedEnumerated = updated.enumerated()
+        let updatedEnumerated = new.enumerated()
 
         var insertedItems = [Change]()
         var removedItems = [Change]()
@@ -64,5 +58,75 @@ public struct Diffuse<T> where T: Equatable {
 
         let allChanges = [insertedItems, removedItems, updatedItems, movedItems].flatMap { $0 }
         return CollectionChanges(allChanges: allChanges)
+    }
+
+    public static func diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
+        // 1. Early return if either the new or the old array is empty.
+        if new.isEmpty {
+            let changes = old.enumerated().map({ offset, _ in return Change.remove(row: offset) })
+            return CollectionChanges(allChanges: changes)
+        } else if old.isEmpty {
+            let changes = new.enumerated().map({ offset, _ in return Change.insert(row: offset) })
+            return CollectionChanges(allChanges: changes)
+        }
+
+        // 2. Map both arrays to sets of `Item<T>` type.
+        let oldSet = Set(old.enumerated().map { offset, element in
+            return Item(value: element, offset: offset, isNew: false)
+        })
+
+        let newSet = Set(new.enumerated().map { offset, element in
+            return Item(value: element, offset: offset, isNew: true)
+        })
+
+        // 3. Get an array with the elements that are either in the new set or in the old set, but not in both.
+        // 4. Sort by offset where old items come first.
+        let difference = Array(newSet.symmetricDifference(oldSet)).sorted(by: {
+            if $0.isNew == $1.isNew {
+                return $0.offset < $1.offset
+            }
+            return !$0.isNew && $1.isNew
+        })
+
+        var newItems = [Item<T>]()
+        var oldChanges = [T: Change]() // [Value: Change]
+        var oldValues = [Int: T]() // [Offset: Value]
+        var changes = [Change]()
+
+        // 5. Iterate over the array of differences (remember that it's sorted, so the old items come first).
+        for item in difference {
+            if item.isNew {
+                if case .remove(let offset)? = oldChanges[item.value] {
+                    // 5.1. MOVE - if the given value exists both in the new and the old sets of changes.
+                    changes.append(.move(fromRow: offset, toRow: item.offset))
+                    oldChanges.removeValue(forKey: item.value)
+                    oldValues.removeValue(forKey: offset)
+                } else {
+                    newItems.append(item)
+                }
+            } else {
+                // 5.2. REMOVE - Assume that the old item has been removed.
+                oldChanges[item.value] = .remove(row: item.offset)
+                // Set value for the given offset (used for checking for updates leter).
+                oldValues[item.offset] = item.value
+            }
+        }
+
+        // 6. Iterate over the array of new items (extracted from the array of differences).
+        for item in newItems {
+            if let value = oldValues[item.offset] {
+                // 6.1. UPDATE - if the given offset exists both in the new and the old sets of changes.
+                changes.append(.updated(row: item.offset))
+                oldChanges.removeValue(forKey: value)
+                oldValues.removeValue(forKey: item.offset)
+            } else {
+                // 6.2. INSERT - if neither value nor offset exists in the old set of changes.
+                changes.append(.insert(row: item.offset))
+            }
+        }
+
+        changes.append(contentsOf: Array(oldChanges.values))
+
+        return CollectionChanges(allChanges: changes)
     }
 }
