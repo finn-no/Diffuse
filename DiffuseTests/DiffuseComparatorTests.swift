@@ -5,7 +5,7 @@
 import XCTest
 @testable import Diffuse
 
-class DiffuseTests: XCTestCase {
+class DiffuseComparatorTests: XCTestCase {
     struct Object: Equatable {
         let objId: Int
         var name: String
