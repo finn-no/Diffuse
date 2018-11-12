@@ -8,6 +8,10 @@ type_name:
 identifier_name:
   min_length: 2
   max_length: 80
+  excluded:
+    - x
+    - y
+    - to
 cyclomatic_complexity: 10
 
 disabled_rules:

@@ -9,31 +9,23 @@ struct IndexPathResult {
     private let changes: CollectionChanges
 
     public var inserted: [IndexPath] {
-        return changes.inserted.map { change -> IndexPath? in
-            guard case let .insert(row: row) = change else { return nil }
-            return IndexPath(row: row, section: section)
-        }.compactMap { $0 }
+        return changes.inserted.map { IndexPath(row: $0, section: section) }
     }
 
     public var removed: [IndexPath] {
-        return changes.removed.map { change -> IndexPath? in
-            guard case let .remove(row: row) = change else { return nil }
-            return IndexPath(row: row, section: section)
-        }.compactMap { $0 }
+        return changes.removed.map { IndexPath(row: $0, section: section) }
     }
 
-    public var moved: [(from: IndexPath, to: IndexPath)] {
-        return changes.updated.map { change -> (from: IndexPath, to: IndexPath)? in
-            guard case let .move(fromRow: fromRow, toRow: toRow) = change else { return nil }
-            return (from: IndexPath(row: fromRow, section: section), to: IndexPath(row: toRow, section: section))
-        }.compactMap { $0 }
+    public var moved: [Move<IndexPath>] {
+        return changes.moved.map { move in
+            let from = IndexPath(row: move.from, section: section)
+            let to = IndexPath(row: move.to, section: section)
+            return Move(from: from, to: to)
+        }
     }
 
     public var updated: [IndexPath] {
-        return changes.updated.map { change -> IndexPath? in
-            guard case let .updated(row: row) = change else { return nil }
-            return IndexPath(row: row, section: section)
-        }.compactMap { $0 }
+        return changes.updated.map { IndexPath(row: $0, section: section) }
     }
 
     init(changes: CollectionChanges, section: Int) {

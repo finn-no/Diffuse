@@ -5,41 +5,19 @@
 import Foundation
 
 public struct CollectionChanges {
-    public private(set) var allChanges: [Change]
+    public let inserted: [Int]
+    public let removed: [Int]
+    public let moved: [Move<Int>]
+    public let updated: [Int]
 
-    public var inserted: [Change] {
-        return allChanges.filter { change in
-            switch change {
-            case .insert(row: _): return true
-            default: return false
-            }
-        }
+    public var count: Int {
+        return inserted.count + removed.count + moved.count + updated.count
     }
 
-    public var removed: [Change] {
-        return allChanges.filter { change in
-            switch change {
-            case .remove(row: _): return true
-            default: return false
-            }
-        }
-    }
-
-    public var moved: [Change] {
-        return allChanges.filter { change in
-            switch change {
-            case .move(fromRow: _, toRow: _): return true
-            default: return false
-            }
-        }
-    }
-
-    public var updated: [Change] {
-        return allChanges.filter { change in
-            switch change {
-            case .updated(row: _): return true
-            default: return false
-            }
-        }
+    public init(inserted: [Int] = [], removed: [Int] = [], moved: [Move<Int>] = [], updated: [Int] = []) {
+        self.inserted = inserted
+        self.removed = removed
+        self.moved = moved
+        self.updated = updated
     }
 }
