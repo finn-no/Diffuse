@@ -61,7 +61,7 @@ public struct Diffuse {
     }
 
     public static func diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
-        // Early return if either new or old array is empty
+        // 1. Early return if either the new or the old array is empty.
         if new.isEmpty {
             let changes = old.enumerated().map({ offset, _ in return Change.remove(row: offset) })
             return CollectionChanges(allChanges: changes)
@@ -70,6 +70,7 @@ public struct Diffuse {
             return CollectionChanges(allChanges: changes)
         }
 
+        // 2. Map both arrays to sets of `<Item<T>` type.
         let oldSet = Set(old.enumerated().map { offset, element in
             return Item(value: element, offset: offset, isNew: false)
         })
@@ -78,8 +79,8 @@ public struct Diffuse {
             return Item(value: element, offset: offset, isNew: true)
         })
 
-        // An array with the elements that are either in the new set or in the old set, but not in both.
-        // Sorted by offset where old items come first.
+        // 3. Get an array with the elements that are either in the new set or in the old set, but not in both.
+        // 4. Sort by offset where old items come first.
         let difference = Array(newSet.symmetricDifference(oldSet)).sorted(by: {
             if $0.isNew == $1.isNew {
                 return $0.offset < $1.offset
@@ -92,12 +93,11 @@ public struct Diffuse {
         var oldValues = [Int: T]() // [Offset: Value]
         var changes = [Change]()
 
-        // Split old and new items.
-        // Since the array is sorted the old items come first.
+        // 5. Iterate over the array of differences (remember that it's sorted, so the old items come first).
         for item in difference {
             if item.isNew {
                 if case .remove(let offset)? = oldChanges[item.value] {
-                    // MOVE - if the given value exists both in the new and the old sets of changes
+                    // 5.1. MOVE - if the given value exists both in the new and the old sets of changes.
                     changes.append(.move(fromRow: offset, toRow: item.offset))
                     oldChanges.removeValue(forKey: item.value)
                     oldValues.removeValue(forKey: offset)
@@ -105,21 +105,22 @@ public struct Diffuse {
                     newItems.append(item)
                 }
             } else {
-                // Assume that the old item has been removed
+                // 5.2. REMOVE - Assume that the old item has been removed.
                 oldChanges[item.value] = .remove(row: item.offset)
-                // Set value for the given offset
+                // Set value for the given offset (used for checking for updates leter).
                 oldValues[item.offset] = item.value
             }
         }
 
+        // 6. Iterate over the array of new items (extracted from the array of differences).
         for item in newItems {
             if let value = oldValues[item.offset] {
-                // UPDATE - if the given offset exists both in the new and the old sets of changes
+                // 6.1. UPDATE - if the given offset exists both in the new and the old sets of changes.
                 changes.append(.updated(row: item.offset))
                 oldChanges.removeValue(forKey: value)
                 oldValues.removeValue(forKey: item.offset)
             } else {
-                // INSERT - if neither value nor offset exists in the old set of changes
+                // 6.2. INSERT - if neither value nor offset exists in the old set of changes.
                 changes.append(.insert(row: item.offset))
             }
         }
