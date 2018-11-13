@@ -11,7 +11,7 @@ class DiffuseHashableTests: XCTestCase {
         var name: String
     }
 
-    // MARK: - Primitives
+    // MARK: - Comparing primitives
 
     func testInsertWithPrimitives() {
         let old = [1, 2, 3]
@@ -57,7 +57,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(1, changes.updated.count)
     }
 
-    // MARK: - Structs and custom comparator
+    // MARK: - Comparing complex structures
 
     func testInsertWithCustomType() {
         let objects = createObjects()
@@ -120,11 +120,15 @@ class DiffuseHashableTests: XCTestCase {
         let old = [objectA, objectB, objectC]
 
         // Move `C`
-        //      = 1 change
+        //      = 1 change (move)
         // Insert `E` and `F`
-        //      = 2 changes
-        // Update `A` to `B` and `B` to `D`
-        //      = 2 change
+        //      = 2 changes (inserts)
+        // Remove `A`
+        //      = 2 changes (updates)
+        //        Index 0 and 1 are both considered updated, since `B` moves to index 0 and `C` moves to index 1.
+        //        This is because the indices are present in both collections, and we're using `hashValue` to
+        //        compare the elements. Since the algorithm can't differentiate between inserted/removed/moved
+        //        on overlapping indices, all changes made to these "shared" indices are considered updates.
         objectB.name = "New name"
 
         let new = [objectB, objectD, objectE, objectC, objectF]

@@ -168,7 +168,7 @@ class DiffuseComparatorTests: XCTestCase {
         let old = [objectA, objectB, objectC]
 
         // Remove `ObjectA`
-        //      = 1 change (remove + pull/move `B` to index 0)
+        //      = 2 changes (remove + pull/move `B` to index 0)
         // Update `B`
         //      = 1 change
         // Insert `D` and `E` before `C`
