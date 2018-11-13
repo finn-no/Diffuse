@@ -141,6 +141,13 @@ public struct Diffuse {
     }
 
     public static func diff2<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
+
+        if old.isEmpty {
+            return CollectionChanges(inserted: Array(0 ..< new.count))
+        } else if new.isEmpty {
+            return CollectionChanges(removed: Array(0 ..< old.count))
+        }
+
         let size = max(old.count, new.count)
 
         var tempArray = Array<Operation<T>?>(repeating: nil, count: size)
