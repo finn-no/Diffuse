@@ -81,7 +81,7 @@ class DiffuseComparatorTests: XCTestCase {
     func testEmptyOldWithComplexStructure() {
         let old = [Object]()
         let new = createObjects()
-        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0.objId == $1.objId })
 
         // Only insertions has occured.
         XCTAssertEqual(4, changes.count)
@@ -91,7 +91,7 @@ class DiffuseComparatorTests: XCTestCase {
     func testEmptyNewWithComplexStructure() {
         let old = createObjects()
         let new = [Object]()
-        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0.objId == $1.objId })
 
         // Only removals has occured.
         XCTAssertEqual(4, changes.count)
@@ -101,7 +101,7 @@ class DiffuseComparatorTests: XCTestCase {
     func testEqualCollectionsWithComplexStructure() {
         let old = createObjects()
         let new = createObjects()
-        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0.objId == $1.objId })
 
         // Both collections are equal, there should be no changes.
         XCTAssertEqual(0, changes.count)
