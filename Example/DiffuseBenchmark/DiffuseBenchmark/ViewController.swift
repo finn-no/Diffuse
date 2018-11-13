@@ -80,6 +80,7 @@ final class ViewController: UIViewController {
 
 private enum Algorithm: String, CaseIterable {
     case diffuse = "Diffuse"
+    case diffuse2 = "Diffuse2"
     case differific = "Differific"
     case deepDiff = "DeepDiff"
 
@@ -87,6 +88,8 @@ private enum Algorithm: String, CaseIterable {
         switch self {
         case .diffuse:
             return { _ = Diffuse.diff(old: old, new: new) }
+        case .diffuse2:
+            return { _ = Diffuse.diff2(old: old, new: new) }
         case .differific:
             return { _ = DiffManager().diff(old, new) }
         case .deepDiff:
