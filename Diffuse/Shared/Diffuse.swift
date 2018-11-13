@@ -139,4 +139,8 @@ public struct Diffuse {
 
         return CollectionChanges(inserted: inserted, removed: Array(oldChanges.values), moved: moved, updated: updated)
     }
+
+    public static func diff2<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
+        return CollectionChanges(inserted: [], removed: [], moved: [], updated: [])
+    }
 }

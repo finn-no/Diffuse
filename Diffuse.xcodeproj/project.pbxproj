@@ -18,6 +18,7 @@
 		CF8C77B4219989E600E5FC1D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B3219989E600E5FC1D /* Item.swift */; };
 		CF8C77B621998C0500E5FC1D /* DiffuseHashableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */; };
 		CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B72199CD7800E5FC1D /* Move.swift */; };
+		CFE43E4A219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE43E49219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		CF8C77B3219989E600E5FC1D /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseHashableTests.swift; sourceTree = "<group>"; };
 		CF8C77B72199CD7800E5FC1D /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		CFE43E49219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseHashableTests2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				08D8B2C32192D8C500EA22CC /* Info.plist */,
 				08D8B2C12192D8C500EA22CC /* DiffuseComparatorTests.swift */,
 				CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */,
+				CFE43E49219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift */,
 				08D8B2E92192E3FA00EA22CC /* Models */,
 			);
 			path = DiffuseTests;
@@ -288,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF8C77B621998C0500E5FC1D /* DiffuseHashableTests.swift in Sources */,
+				CFE43E4A219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift in Sources */,
 				08D8B2C22192D8C500EA22CC /* DiffuseComparatorTests.swift in Sources */,
 				08D8B2EB2192E41D00EA22CC /* ItemTests.swift in Sources */,
 			);
