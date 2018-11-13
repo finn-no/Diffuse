@@ -5,15 +5,44 @@
 import XCTest
 @testable import Diffuse
 
-class DiffuseTests: XCTestCase {
+class DiffuseComparatorTests: XCTestCase {
     struct Object: Equatable {
         let objId: Int
         var name: String
     }
 
-    // MARK: - Primitives
+    func testEmptyOldEmptyNew() {
+        let old = [Int]()
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
 
-    func testInsert_withPrimitives() {
+        // Both collections are empty.
+        XCTAssertEqual(0, changes.count)
+    }
+
+    // MARK: - Comparing primitives
+
+    func testEmptyOldWithPrimitives() {
+        let old = [Int]()
+        let new = [1, 2, 3]
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only insertions has occured.
+        XCTAssertEqual(3, changes.count)
+        XCTAssertEqual(3, changes.inserted.count)
+    }
+
+    func testEmptyNewWithPrimitives() {
+        let old = [1, 2, 3]
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only removals has occured.
+        XCTAssertEqual(3, changes.count)
+        XCTAssertEqual(3, changes.removed.count)
+    }
+
+    func testInsertWithPrimitives() {
         let old = [1, 2, 3]
         let new = [1, 4, 2, 3, 5]
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
@@ -25,7 +54,7 @@ class DiffuseTests: XCTestCase {
         XCTAssertEqual(2, changes.moved.count)
     }
 
-    func testRemove_withPrimitives() {
+    func testRemoveWithPrimitives() {
         let old = [1, 2, 3, 4, 5]
         let new = [1, 3, 5]
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
@@ -37,7 +66,7 @@ class DiffuseTests: XCTestCase {
         XCTAssertEqual(2, changes.moved.count)
     }
 
-    func testMove_withPrimitives() {
+    func testMoveWithPrimitives() {
         let old = [1, 2, 3, 4, 5]
         let new = [5, 1, 3, 2, 4]
         let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
@@ -47,9 +76,38 @@ class DiffuseTests: XCTestCase {
         XCTAssertEqual(4, changes.moved.count)
     }
 
-    // MARK: - Structs and custom comparator
+    // MARK: - Comparing complex structures
 
-    func testInsert_withCustomComparator() {
+    func testEmptyOldWithComplexStructure() {
+        let old = [Object]()
+        let new = createObjects()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only insertions has occured.
+        XCTAssertEqual(4, changes.count)
+        XCTAssertEqual(4, changes.inserted.count)
+    }
+
+    func testEmptyNewWithComplexStructure() {
+        let old = createObjects()
+        let new = [Object]()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Only removals has occured.
+        XCTAssertEqual(4, changes.count)
+        XCTAssertEqual(4, changes.removed.count)
+    }
+
+    func testEqualCollectionsWithComplexStructure() {
+        let old = createObjects()
+        let new = createObjects()
+        let changes = Diffuse.diff(old: old, new: new, comparator: { $0 == $1 })
+
+        // Both collections are equal, there should be no changes.
+        XCTAssertEqual(0, changes.count)
+    }
+
+    func testInsertWithComplexStructure() {
         let objects = createObjects()
         let old = objects
         var new = objects
@@ -67,7 +125,7 @@ class DiffuseTests: XCTestCase {
         XCTAssertEqual(3, changes.moved.count)
     }
 
-    func testRemove_withCustomComparator() {
+    func testRemoveWithComplexStructure() {
         let objects = createObjects()
         let old = objects
         var new = objects
@@ -85,7 +143,7 @@ class DiffuseTests: XCTestCase {
         XCTAssertEqual(1, changes.moved.count)
     }
 
-    func testUpdate_withCustomComparator() {
+    func testUpdateWithComplexStructure() {
         let objects = createObjects()
         let old = objects
         var new = objects
@@ -100,7 +158,7 @@ class DiffuseTests: XCTestCase {
         XCTAssertEqual(2, changes.count)
     }
 
-    func testMultipleOperations_withCustomComparator() {
+    func testMultipleOperationsWithComplexStructure() {
         let objectA = Object(objId: 0, name: "A")
         var objectB = Object(objId: 1, name: "B")
         let objectC = Object(objId: 2, name: "C")
@@ -110,7 +168,7 @@ class DiffuseTests: XCTestCase {
         let old = [objectA, objectB, objectC]
 
         // Remove `ObjectA`
-        //      = 1 change (remove + pull/move `B` to index 0)
+        //      = 2 changes (remove + pull/move `B` to index 0)
         // Update `B`
         //      = 1 change
         // Insert `D` and `E` before `C`

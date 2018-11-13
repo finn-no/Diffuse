@@ -11,9 +11,38 @@ class DiffuseHashableTests: XCTestCase {
         var name: String
     }
 
-    // MARK: - Primitives
+    func testEmptyOldEmptyNew() {
+        let old = [Int]()
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new)
 
-    func testInsert_withPrimitives() {
+        // Both collections are empty.
+        XCTAssertEqual(0, changes.count)
+    }
+
+    // MARK: - Comparing primitives
+
+    func testEmptyOldWithPrimitives() {
+        let old = [Int]()
+        let new = [1, 2, 3]
+        let changes = Diffuse.diff(old: old, new: new)
+
+        // Only insertions has occured.
+        XCTAssertEqual(3, changes.count)
+        XCTAssertEqual(3, changes.inserted.count)
+    }
+
+    func testEmptyNewWithPrimitives() {
+        let old = [1, 2, 3]
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new)
+
+        // Only removals has occured.
+        XCTAssertEqual(3, changes.count)
+        XCTAssertEqual(3, changes.removed.count)
+    }
+
+    func testInsertWithPrimitives() {
         let old = [1, 2, 3]
         let new = [1, 4, 2, 3, 5]
         let changes = Diffuse.diff(old: old, new: new)
@@ -25,7 +54,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(2, changes.moved.count)
     }
 
-    func testRemove_withPrimitives() {
+    func testRemoveWithPrimitives() {
         let old = [1, 2, 3, 4, 5]
         let new = [1, 3, 5]
         let changes = Diffuse.diff(old: old, new: new)
@@ -37,7 +66,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(2, changes.moved.count)
     }
 
-    func testMove_withPrimitives() {
+    func testMoveWithPrimitives() {
         let old = [1, 2, 3, 4, 5]
         let new = [5, 1, 3, 2, 4]
         let changes = Diffuse.diff(old: old, new: new)
@@ -47,7 +76,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(4, changes.moved.count)
     }
 
-    func testUpdate_withPrimitives() {
+    func testUpdateWithPrimitives() {
         let old = [1, 2, 3, 4, 5]
         let new = [1, 2, 3, 6, 5]
         let changes = Diffuse.diff(old: old, new: new)
@@ -57,9 +86,28 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(1, changes.updated.count)
     }
 
-    // MARK: - Structs and custom comparator
+    func testMultipleOperationsWithPrimitives() {
+        let old = [0, 1, 2]
 
-    func testInsert_withCustomType() {
+        // Move `2`
+        //      = 1 change (move)
+        // Insert `4` and `5`
+        //      = 2 changes (inserts)
+        // Remove `0` and insert `3`
+        //      = 3 changes (remove, move and insert)
+        let new = [1, 3, 4, 2, 5]
+        let changes = Diffuse.diff(old: old, new: new)
+
+        XCTAssertEqual(6, changes.count)
+        XCTAssertEqual(2, changes.moved.count)
+        XCTAssertEqual(3, changes.inserted.count)
+        XCTAssertEqual(1, changes.removed.count)
+        XCTAssertEqual(0, changes.updated.count)
+    }
+
+    // MARK: - Comparing complex structures
+
+    func testInsertWithCustomType() {
         let objects = createObjects()
         let old = objects
         var new = objects
@@ -77,7 +125,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(3, changes.moved.count)
     }
 
-    func testRemove_withCustomType() {
+    func testRemoveWithCustomType() {
         let objects = createObjects()
         let old = objects
         var new = objects
@@ -95,7 +143,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(1, changes.moved.count)
     }
 
-    func testUpdate_withCustomType() {
+    func testUpdateWithCustomType() {
         let objects = createObjects()
         let old = objects
         var new = objects
@@ -110,7 +158,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(2, changes.count)
     }
 
-    func testMultipleOperations_withCustomType() {
+    func testMultipleOperationsWithCustomType() {
         let objectA = Object(objId: 0, name: "A")
         var objectB = Object(objId: 1, name: "B")
         let objectC = Object(objId: 2, name: "C")
@@ -120,11 +168,23 @@ class DiffuseHashableTests: XCTestCase {
         let old = [objectA, objectB, objectC]
 
         // Move `C`
-        //      = 1 change
+        //      = 1 change (move)
         // Insert `E` and `F`
-        //      = 2 changes
-        // Update `A` to `B` and `B` to `D`
-        //      = 2 change
+        //      = 2 changes (inserts)
+        // Remove `A` and insert `D`
+        //      = 2 changes (updates)
+        //        Index 0 and 1 are both considered updated.
+        //
+        //        "But, why? `A` is removed, `B` is updated and moved to index 0 and `D` is inserted at index 1, this should be
+        //        one delete, one update, one move and one insert, right?"
+        //
+        //        Nope.
+        //        We're using `hashValue` to compare elements, so `B` is actually considered to be a new element since it's
+        //        `hashValue` has changed because of the update. This means that the algorithm now thinks two deletions and
+        //        two insertions have happened instead. Both `A` and `old B` are considered removed from index 0 and 1, and new
+        //        elements are inserted to index 0 and 1 (`new B` and `D`).
+        //        For better UX when updating ie. a `UITableView` we've decided that a removal and an insertion on the same
+        //        index is to be considered an update.
         objectB.name = "New name"
 
         let new = [objectB, objectD, objectE, objectC, objectF]
@@ -134,6 +194,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(1, changes.moved.count)
         XCTAssertEqual(2, changes.inserted.count)
         XCTAssertEqual(2, changes.updated.count)
+        XCTAssertEqual(0, changes.removed.count)
     }
 
     // MARK: - Helpers
