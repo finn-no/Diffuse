@@ -1,0 +1,4 @@
+github "finn-no/Diffuse" "c3b01a1cc4763871b70a472f1a4358e73208c7c4"
+github "onmyway133/DeepDiff" "1.3.0"
+github "tonyarnold/Differ" "1.3.0"
+github "zenangst/Differific" "0.5.2"

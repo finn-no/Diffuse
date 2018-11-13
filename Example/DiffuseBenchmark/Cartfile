@@ -1,0 +1,4 @@
+github "finn-no/Diffuse" "master"
+github "zenangst/Differific"
+github "onmyway133/DeepDiff"
+github "tonyarnold/Differ"
