@@ -12,15 +12,15 @@ extension UITableView {
     }
 
     public func reload(with changes: CollectionChanges,
-                       animations: [Operation: RowAnimation]?,
+                       animations: [Operation: RowAnimation] = [:],
                        section: Int = 0,
                        updateDataSource: () -> Void) {
         guard changes.count != 0 else { return }
         let indexPaths = IndexPathResult(changes: changes, section: section)
 
-        let insertAnimation = animations?[.insert] ?? .automatic
-        let reloadAnimation = animations?[.reload] ?? .automatic
-        let deleteAnimation = animations?[.delete] ?? .automatic
+        let insertAnimation = animations[.insert] ?? .automatic
+        let reloadAnimation = animations[.reload] ?? .automatic
+        let deleteAnimation = animations[.delete] ?? .automatic
 
         if #available(iOS 11, *) {
             performBatchUpdates({
