@@ -140,7 +140,7 @@ public struct Diffuse {
         return CollectionChanges(inserted: inserted, removed: Array(oldChanges.values), moved: moved, updated: updated)
     }
 
-    public static func diff2<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
+    public static func diff22<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
 
         if old.isEmpty {
             return CollectionChanges(inserted: Array(0 ..< new.count))
@@ -208,6 +208,72 @@ public struct Diffuse {
         let updated = updates.map { $0.updated }
 
         return CollectionChanges(inserted: inserted, removed: removed, moved: moved, updated: updated)
+    }
+
+    static func diff2<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
+
+        if old.isEmpty {
+            return CollectionChanges(inserted: Array(0 ..< new.count))
+        } else if new.isEmpty {
+            return CollectionChanges(removed: Array(0 ..< old.count))
+        }
+
+        let minSize = min(old.count, new.count)
+
+        var startIndex = 0
+        for i in 0 ..< minSize {
+            if new[i] != old[i] {
+                startIndex = i
+                break
+            }
+        }
+
+        var oldSet = Set<Element<T>>(minimumCapacity: old.count)
+        for i in startIndex ..< old.count { oldSet.insert(Element(value: old[i], index: i)) }
+
+        var moved = [Move<Int>]()
+        moved.reserveCapacity(minSize)
+
+        var inserted = Set<Int>(minimumCapacity: new.count)
+
+        for i in startIndex ..< new.count {
+            let element = Element(value: new[i], index: i)
+            if let m = oldSet.remove(element) {
+                guard m.index != i else { continue }
+                moved.append((from: m.index, to: element.index))
+            } else {
+                inserted.insert(i)
+            }
+        }
+
+        var removed = [Int]()
+        removed.reserveCapacity(old.count)
+
+        var updated = [Int]()
+        updated.reserveCapacity(minSize)
+
+        for element in oldSet {
+            if let update = inserted.remove(element.index) {
+                updated.append(update)
+            } else {
+                removed.append(element.index)
+            }
+        }
+
+        return CollectionChanges(inserted: Array<Int>(inserted), removed: removed, moved: moved, updated: updated)
+    }
+}
+
+struct Element<T: Hashable>: Hashable {
+    let value: T
+    let index: Int
+
+    var hashValue: Int {
+        return value.hashValue
+    }
+
+    static func ==(lhs: Element<T>, rhs: Element<T>) -> Bool {
+        return lhs.value == rhs.value
     }
 }
 
