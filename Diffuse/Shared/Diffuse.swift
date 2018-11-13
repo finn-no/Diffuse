@@ -141,6 +141,89 @@ public struct Diffuse {
     }
 
     public static func diff2<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
-        return CollectionChanges(inserted: [], removed: [], moved: [], updated: [])
+        let size = max(old.count, new.count)
+
+        var tempArray = Array<Operation<T>?>(repeating: nil, count: size)
+        var updates = Set<Operation<T>>(minimumCapacity: size)
+        var removes = Set<Operation<T>>(minimumCapacity: size)
+        var inserts = Set<Operation<T>>(minimumCapacity: size)
+        var moves = Set<Operation<T>>(minimumCapacity: size)
+
+        for i in 0 ..< size {
+            if i < old.count, i < new.count {
+                guard old[i] != new[i] else { continue }
+
+                let removeOp = Operation(value: old[i], removed: i)
+                let insertOp = Operation(value: new[i], inserted: i)
+
+                if let moved = inserts.remove(removeOp) {
+                    moves.insert(Operation(value: old[i], moved: (removeOp.removed, moved.inserted)))
+                    tempArray[moved.inserted] = nil
+                } else { removes.insert(removeOp) }
+
+                if let moved = removes.remove(insertOp) { moves.insert(Operation(value: new[i], moved: (moved.removed, insertOp.inserted))) }
+                else {
+                    inserts.insert(insertOp)
+                    tempArray[i] = insertOp
+                }
+
+                continue
+            }
+
+            if i < old.count {
+                let removeOp = Operation(value: old[i], removed: i)
+                if let moved = inserts.remove(removeOp) {
+                    moves.insert(Operation(value: old[i], moved: (removeOp.removed, moved.inserted)))
+                    tempArray[moved.inserted] = nil
+                }
+                else { removes.insert(removeOp) }
+                continue
+            }
+
+            if i < new.count {
+                let insertOp = Operation(value: new[i], inserted: i)
+                if let moved = removes.remove(insertOp) { moves.insert(Operation(value: new[i], moved: (moved.removed, insertOp.inserted))) }
+                else { inserts.insert(insertOp) }
+                continue
+            }
+        }
+
+        removes.forEach { op in
+            guard let updated = tempArray[op.removed] else { return }
+            removes.remove(op)
+            inserts.remove(updated)
+            updates.insert(Operation(value: updated.value, updated: updated.inserted))
+        }
+
+        let inserted = inserts.map { $0.inserted }
+        let removed = removes.map { $0.removed }
+        let moved = moves.map { $0.moved }
+        let updated = updates.map { $0.updated }
+
+        return CollectionChanges(inserted: inserted, removed: removed, moved: moved, updated: updated)
+    }
+}
+
+struct Operation<T: Hashable>: Hashable {
+    let value: T
+    let removed: Int
+    let inserted: Int
+    let moved: Move<Int>
+    let updated: Int
+
+    init(value: T, removed: Int = -1, inserted: Int = -1, moved: Move<Int> = (-1, -1), updated: Int = -1) {
+        self.value = value
+        self.removed = removed
+        self.inserted = inserted
+        self.moved = moved
+        self.updated = updated
+    }
+
+    var hashValue: Int {
+        return value.hashValue
+    }
+
+    static func == (lhs: Operation<T>, rhs: Operation<T>) -> Bool {
+        return lhs.value == rhs.value
     }
 }
