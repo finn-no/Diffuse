@@ -181,7 +181,7 @@ class DiffuseHashableTests: XCTestCase {
         //        Nope.
         //        We're using `hashValue` to compare elements, so `B` is actually considered to be a new element since it's
         //        `hashValue` has changed because of the update. This means that the algorithm now thinks two deletions and
-        //        two insertions has happened instead. Both `A` and `old B` are considered removed from index 0 and 1, and new
+        //        two insertions have happened instead. Both `A` and `old B` are considered removed from index 0 and 1, and new
         //        elements are inserted to index 0 and 1 (`new B` and `D`).
         //        For better UX when updating ie. a `UITableView` we've decided that a removal and an insertion on the same
         //        index is to be considered an update.
