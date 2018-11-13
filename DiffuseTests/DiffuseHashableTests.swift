@@ -11,7 +11,36 @@ class DiffuseHashableTests: XCTestCase {
         var name: String
     }
 
+    func testEmptyOldEmptyNew() {
+        let old = [Int]()
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new)
+
+        // Both collections are empty.
+        XCTAssertEqual(0, changes.count)
+    }
+
     // MARK: - Comparing primitives
+
+    func testEmptyOldWithPrimitives() {
+        let old = [Int]()
+        let new = [1, 2, 3]
+        let changes = Diffuse.diff(old: old, new: new)
+
+        // Only insertions has occured.
+        XCTAssertEqual(3, changes.count)
+        XCTAssertEqual(3, changes.inserted.count)
+    }
+
+    func testEmptyNewWithPrimitives() {
+        let old = [1, 2, 3]
+        let new = [Int]()
+        let changes = Diffuse.diff(old: old, new: new)
+
+        // Only removals has occured.
+        XCTAssertEqual(3, changes.count)
+        XCTAssertEqual(3, changes.removed.count)
+    }
 
     func testInsertWithPrimitives() {
         let old = [1, 2, 3]
@@ -55,6 +84,25 @@ class DiffuseHashableTests: XCTestCase {
         // The only item has been updated
         XCTAssertEqual(1, changes.count)
         XCTAssertEqual(1, changes.updated.count)
+    }
+
+    func testMultipleOperationsWithPrimitives() {
+        let old = [0, 1, 2]
+
+        // Move `2`
+        //      = 1 change (move)
+        // Insert `4` and `5`
+        //      = 2 changes (inserts)
+        // Remove `0` and insert `3`
+        //      = 3 changes (remove, move and insert)
+        let new = [1, 3, 4, 2, 5]
+        let changes = Diffuse.diff(old: old, new: new)
+
+        XCTAssertEqual(6, changes.count)
+        XCTAssertEqual(2, changes.moved.count)
+        XCTAssertEqual(3, changes.inserted.count)
+        XCTAssertEqual(1, changes.removed.count)
+        XCTAssertEqual(0, changes.updated.count)
     }
 
     // MARK: - Comparing complex structures
