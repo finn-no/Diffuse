@@ -123,12 +123,20 @@ class DiffuseHashableTests: XCTestCase {
         //      = 1 change (move)
         // Insert `E` and `F`
         //      = 2 changes (inserts)
-        // Remove `A`
+        // Remove `A` and insert `D`
         //      = 2 changes (updates)
-        //        Index 0 and 1 are both considered updated, since `B` moves to index 0 and `C` moves to index 1.
-        //        This is because the indices are present in both collections, and we're using `hashValue` to
-        //        compare the elements. Since the algorithm can't differentiate between inserted/removed/moved
-        //        on overlapping indices, all changes made to these "shared" indices are considered updates.
+        //        Index 0 and 1 are both considered updated.
+        //
+        //        "But, why? `A` is removed, `B` is updated and moved to index 0 and `D` is inserted at index 1, this should be
+        //        one delete, one update, one move and one insert, right?"
+        //
+        //        Nope.
+        //        We're using `hashValue` to compare elements, so `B` is actually considered to be a new element since it's
+        //        `hashValue` has changed because of the update. This means that the algorithm now thinks two deletions and
+        //        two insertions has happened instead. Both `A` and `old B` are considered removed from index 0 and 1, and new
+        //        elements are inserted to index 0 and 1 (`new B` and `D`).
+        //        For better UX when updating ie. a `UITableView` we've decided that a removal and an insertion on the same
+        //        index is to be considered an update.
         objectB.name = "New name"
 
         let new = [objectB, objectD, objectE, objectC, objectF]
@@ -138,6 +146,7 @@ class DiffuseHashableTests: XCTestCase {
         XCTAssertEqual(1, changes.moved.count)
         XCTAssertEqual(2, changes.inserted.count)
         XCTAssertEqual(2, changes.updated.count)
+        XCTAssertEqual(0, changes.removed.count)
     }
 
     // MARK: - Helpers
