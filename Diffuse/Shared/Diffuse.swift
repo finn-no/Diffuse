@@ -73,71 +73,65 @@ public struct Diffuse {
     public static func diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
         // 1. Early return if either the new or the old array is empty.
         if new.isEmpty {
-            let removed = old.enumerated().map({ offset, _ in return offset })
-            return CollectionChanges(removed: removed)
+            return CollectionChanges(removed: Array(0..<old.count))
         } else if old.isEmpty {
-            let inserted = new.enumerated().map({ offset, _ in return offset })
-            return CollectionChanges(inserted: inserted)
+            return CollectionChanges(inserted: Array(0..<new.count))
         }
 
-        // 2. Map both arrays to sets of `Item<T>` type.
-        let oldSet = Set(old.enumerated().map { offset, element in
-            return Item(value: element, offset: offset, isNew: false)
-        })
-
-        let newSet = Set(new.enumerated().map { offset, element in
-            return Item(value: element, offset: offset, isNew: true)
-        })
-
-        // 3. Get an array with the elements that are either in the new set or in the old set, but not in both.
-        // 4. Sort by offset where old items come first.
-        let difference = Array(newSet.symmetricDifference(oldSet)).sorted(by: {
-            if $0.isNew == $1.isNew {
-                return $0.offset < $1.offset
-            }
-            return !$0.isNew && $1.isNew
-        })
-
-        var newItems = [Item<T>]()
-        var oldChanges = [T: Int]() // [Value: Change]
-        var oldValues = [Int: T]() // [Offset: Value]
+        var removedOffsets = [Int: Int]() // [HashValue: Offset] of removed elements.
+        var removedHashValues = [Int: Int]() // [Offset: HashValue] of removed elements.
+        var updatedAndInsertedOffsets = [Int]() // Offsets for updated and inserted elements.
+        var inserted = [Int]()
         var moved = [Move<Int>]()
         var updated = [Int]()
-        var inserted = [Int]()
 
-        // 5. Iterate over the array of differences (remember that it's sorted, so the old items come first).
-        for item in difference {
-            if item.isNew {
-                if let offset = oldChanges[item.value] {
-                    // 5.1. MOVE - if the given value exists both in the new and the old sets of changes.
-                    moved.append(Move(from: offset, to: item.offset))
-                    oldChanges.removeValue(forKey: item.value)
-                    oldValues.removeValue(forKey: offset)
-                } else {
-                    newItems.append(item)
+        // Exlude an element with the given hash value and offset from being marked as removed.
+        func excludeRemoved(hashValue: Int, offset: Int) {
+            removedOffsets.removeValue(forKey: hashValue)
+            removedHashValues.removeValue(forKey: offset)
+        }
+
+        // 2. Iterate over the array of old elements.
+        var offset = 0
+        for element in old {
+            defer { offset += 1 }
+            // 2.1. REMOVE - Assume that the old item has been removed.
+            let hashValue = element.hashValue
+            removedOffsets[hashValue] = offset
+            removedHashValues[offset] = hashValue
+        }
+
+        // 3. Iterate over the array of new elements.
+        offset = 0
+        for element in new {
+            defer { offset += 1 }
+
+            if let oldOffset = removedOffsets[element.hashValue] {
+                // 3.1. MOVE - if the given element exists both in the new and the old arrays.
+                if oldOffset != offset {
+                    moved.append(Move(from: oldOffset, to: offset))
                 }
+                excludeRemoved(hashValue: element.hashValue, offset: oldOffset)
             } else {
-                // 5.2. REMOVE - Assume that the old item has been removed.
-                oldChanges[item.value] = item.offset
-                // Set value for the given offset (used for checking for updates leter).
-                oldValues[item.offset] = item.value
+                // 3.2. Append to the array of offsets for updates and inserts.
+                updatedAndInsertedOffsets.append(offset)
             }
         }
 
-        // 6. Iterate over the array of new items (extracted from the array of differences).
-        for item in newItems {
-            if let value = oldValues[item.offset] {
-                // 6.1. UPDATE - if the given offset exists both in the new and the old sets of changes.
-                updated.append(item.offset)
-                oldChanges.removeValue(forKey: value)
-                oldValues.removeValue(forKey: item.offset)
+        // 4. Iterate over the array of offsets for updates and inserts.
+        for offset in updatedAndInsertedOffsets {
+            if let hashValue = removedHashValues[offset] {
+                // 4.1. UPDATE - if the given offset also exists in the array of removed elements.
+                // remove(n) + insert(n) = update(n)
+                updated.append(offset)
+                excludeRemoved(hashValue: hashValue, offset: offset)
             } else {
-                // 6.2. INSERT - if neither value nor offset exists in the old set of changes.
-                inserted.append(item.offset)
+                // 4.2. INSERT - if neither element nor offset exists in the old array.
+                inserted.append(offset)
             }
         }
 
-        return CollectionChanges(inserted: inserted, removed: Array(oldChanges.values), moved: moved, updated: updated)
+        return CollectionChanges(inserted: inserted, removed: Array(removedHashValues.keys), moved: moved, updated: updated)
     }
 
     public static func diff2<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
