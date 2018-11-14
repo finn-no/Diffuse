@@ -5,12 +5,6 @@
 import UIKit
 
 extension UITableView {
-    public enum Operation {
-        case insert
-        case reload
-        case delete
-    }
-
     public func reload(with changes: CollectionChanges,
                        section: Int = 0,
                        updateDataSource: () -> Void) {
