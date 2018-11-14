@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0873B3D8219C710E00794869 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0873B3D7219C710E00794869 /* UICollectionViewExtensions.swift */; };
 		08D8B2BD2192D8C500EA22CC /* Diffuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D8B2B32192D8C500EA22CC /* Diffuse.framework */; };
 		08D8B2C22192D8C500EA22CC /* DiffuseComparatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2C12192D8C500EA22CC /* DiffuseComparatorTests.swift */; };
 		08D8B2C42192D8C500EA22CC /* Diffuse.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D8B2B62192D8C500EA22CC /* Diffuse.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0873B3D7219C710E00794869 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
 		08D8B2B32192D8C500EA22CC /* Diffuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Diffuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08D8B2B62192D8C500EA22CC /* Diffuse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Diffuse.h; sourceTree = "<group>"; };
 		08D8B2B72192D8C500EA22CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				08D8B2F721932D8400EA22CC /* UITableViewExtensions.swift */,
+				0873B3D7219C710E00794869 /* UICollectionViewExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */,
 				08D8B2E22192E0FA00EA22CC /* Diffuse.swift in Sources */,
 				08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */,
+				0873B3D8219C710E00794869 /* UICollectionViewExtensions.swift in Sources */,
 				08D8B2F821932D8400EA22CC /* UITableViewExtensions.swift in Sources */,
 				CF8C77B4219989E600E5FC1D /* Item.swift in Sources */,
 				08D8B2FA21932F9000EA22CC /* IndexPathResult.swift in Sources */,
