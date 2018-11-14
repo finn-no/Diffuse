@@ -12,22 +12,18 @@ extension UITableView {
     }
 
     public func reload(with changes: CollectionChanges,
-                       animations: [Operation: RowAnimation]?,
                        section: Int = 0,
                        updateDataSource: () -> Void) {
         guard changes.count != 0 else { return }
         let indexPaths = IndexPathResult(changes: changes, section: section)
-
-        let insertAnimation = animations?[.insert] ?? .automatic
-        let reloadAnimation = animations?[.reload] ?? .automatic
-        let deleteAnimation = animations?[.delete] ?? .automatic
+        let animation = UITableView.RowAnimation.automatic
 
         if #available(iOS 11, *) {
             performBatchUpdates({
                 updateDataSource()
-                insertRows(at: indexPaths.inserted, with: insertAnimation)
-                reloadRows(at: indexPaths.updated, with: reloadAnimation)
-                deleteRows(at: indexPaths.removed, with: deleteAnimation)
+                insertRows(at: indexPaths.inserted, with: animation)
+                reloadRows(at: indexPaths.updated, with: animation)
+                deleteRows(at: indexPaths.removed, with: animation)
                 indexPaths.moved.forEach { (fromRow, toRow) in
                     moveRow(at: fromRow, to: toRow)
                 }
@@ -35,9 +31,9 @@ extension UITableView {
         } else {
             beginUpdates()
             updateDataSource()
-            insertRows(at: indexPaths.inserted, with: insertAnimation)
-            reloadRows(at: indexPaths.updated, with: reloadAnimation)
-            deleteRows(at: indexPaths.removed, with: deleteAnimation)
+            insertRows(at: indexPaths.inserted, with: animation)
+            reloadRows(at: indexPaths.updated, with: animation)
+            deleteRows(at: indexPaths.removed, with: animation)
             indexPaths.moved.forEach { (fromRow, toRow) in
                 moveRow(at: fromRow, to: toRow)
             }
