@@ -16,7 +16,6 @@
 		08D8B2FA21932F9000EA22CC /* IndexPathResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2F921932F9000EA22CC /* IndexPathResult.swift */; };
 		CF8C77B621998C0500E5FC1D /* DiffuseHashableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */; };
 		CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B72199CD7800E5FC1D /* Move.swift */; };
-		CFE43E4A219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE43E49219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +42,6 @@
 		08D8B2F921932F9000EA22CC /* IndexPathResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPathResult.swift; sourceTree = "<group>"; };
 		CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseHashableTests.swift; sourceTree = "<group>"; };
 		CF8C77B72199CD7800E5FC1D /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
-		CFE43E49219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseHashableTests2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +99,6 @@
 				08D8B2C32192D8C500EA22CC /* Info.plist */,
 				08D8B2C12192D8C500EA22CC /* DiffuseComparatorTests.swift */,
 				CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */,
-				CFE43E49219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift */,
 			);
 			path = DiffuseTests;
 			sourceTree = "<group>";
@@ -276,7 +273,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF8C77B621998C0500E5FC1D /* DiffuseHashableTests.swift in Sources */,
-				CFE43E4A219AFD2D00D3D5F7 /* DiffuseHashableTests2.swift in Sources */,
 				08D8B2C22192D8C500EA22CC /* DiffuseComparatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
