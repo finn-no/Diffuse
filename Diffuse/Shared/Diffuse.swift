@@ -90,6 +90,7 @@ public struct Diffuse {
         updated.reserveCapacity(minSize)
 
         // 2 - Skip all the equal elements in the beginning of the arrays
+        // swiftlint:disable for_where
         var startIndex = 0
         for i in 0..<minSize {
             if new[i] != old[i] {
@@ -137,19 +138,6 @@ public struct Diffuse {
         }
 
         // 6 - Convert 'inserted' to an array and return with the other operations
-        return CollectionChanges(inserted: Array<Int>(inserted), removed: removed, moved: moved, updated: updated)
-    }
-}
-
-struct Element<T: Hashable>: Hashable {
-    let value: T
-    let index: Int
-
-    var hashValue: Int {
-        return value.hashValue
-    }
-
-    static func ==(lhs: Element<T>, rhs: Element<T>) -> Bool {
-        return lhs.value == rhs.value
+        return CollectionChanges(inserted: [Int](inserted), removed: removed, moved: moved, updated: updated)
     }
 }
