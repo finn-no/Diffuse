@@ -21,6 +21,12 @@ Currently we have two different methods, each with their own algorithm. They bot
 github "finn-no/Diffuse"
 ```
 
+`Diffuse` is also available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
+
+```ruby
+pod 'Diffuse'
+```
+
 ## Usage
 As mentioned, we have two different methods/algorithms:
 - `diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges`
@@ -78,7 +84,7 @@ tableView.reload(with: changes, section: 1, updateDataSource: { dataSource.model
 ### `Diffuse.diff(old: [T], new: [T])`
 This one is *faaaaast*! 🏎🔥 You could say its compexity is `O(damn that's swift)`😮 Jokes aside, it's actually `O(n)`.
 
-This algorithm is usable for both Swift "primitives" and more complex structures, and uses `hashValue` for comparison. This means element in your collections must implement the `Hashable` protocol. 
+This algorithm is usable for both Swift "primitives" and more complex structures, and uses `hashValue` for comparison. This means element in your collections must implement the `Hashable` protocol.
 
 #### Caveats
 Since we're using the elements `hashValue` for comparison, this algorithm won't be directly able to figure out updates to an element. An updated element will have a different `hashValue` than the old element. This makes the algorithm think the old element is removed and the updated element is inserted, given that the index is the same.
@@ -158,7 +164,7 @@ print(changes.updated)   // [1]                  <- Element B/D
 
 ### `Diffuse.diff(old: [T], new: [T], comparator: (T, T) -> Bool)`
 
-The algorithm this method uses isn't as fast as `diff(old:new)`, but it gives you more control when comparing complex elements. It takes a closure as one of its parameters, so you can control how you would like to compare the elements. This is useful if you explicitly need to know which elements has been updated. This works best if your elements has some form of unique identifier, like `id`. 
+The algorithm this method uses isn't as fast as `diff(old:new)`, but it gives you more control when comparing complex elements. It takes a closure as one of its parameters, so you can control how you would like to compare the elements. This is useful if you explicitly need to know which elements has been updated. This works best if your elements has some form of unique identifier, like `id`.
 
 Note that all elements must implement `Equatable`.
 
