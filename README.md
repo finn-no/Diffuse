@@ -1,4 +1,6 @@
-# FINN Diffuse
+<p align="center"><img width=100% src="https://raw.githubusercontent.com/finn-no/Diffuse/master/Github/banner.png"></p>
+
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![](https://img.shields.io/badge/platform-iOS-lightgrey.svg) ![](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ## Description
 **Diffuse** is library that aims to simplify the diffing of two collections. After diffing you get to know:
