@@ -47,6 +47,7 @@ class DiffuseHashableTests2: XCTestCase {
         let new = [1, 4, 2, 3, 5]
         let changes = Diffuse.diff2(old: old, new: new)
 
+        print(changes)
         // Number 4 is inserted at index `1`, which means two items (number 2 and 3) have been pushed/moved.
         // The total number of changes should equal 4.
         XCTAssertEqual(4, changes.count)
@@ -70,7 +71,7 @@ class DiffuseHashableTests2: XCTestCase {
         let old = [1, 2, 3, 4, 5]
         let new = [5, 1, 3, 2, 4]
         let changes = Diffuse.diff2(old: old, new: new)
-
+        print(changes)
         // The only item in its original position is the number 3. The rest have been moved.
         XCTAssertEqual(4, changes.count)
         XCTAssertEqual(4, changes.moved.count)
@@ -80,7 +81,7 @@ class DiffuseHashableTests2: XCTestCase {
         let old = [1, 2, 3, 4, 5]
         let new = [1, 2, 3, 6, 5]
         let changes = Diffuse.diff2(old: old, new: new)
-
+        print(changes)
         // The only item has been updated
         XCTAssertEqual(1, changes.count)
         XCTAssertEqual(1, changes.updated.count)
