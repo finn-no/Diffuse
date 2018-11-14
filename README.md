@@ -20,7 +20,7 @@ github "finn-no/Diffuse"
 ```
 
 ## Usage
-As mentioned, we have to different methods/algorithms:
+As mentioned, we have two different methods/algorithms:
 - `diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges`
 - `diff<T: Equatable>(old: [T], new: [T], comparator: (T, T) -> Bool) -> CollectionChanges`
 
@@ -52,12 +52,11 @@ let c = Object(id: 3, name: "C")
 let old = [a, b, c]
 
 let new = [a, c, b]
-
 let changes = Diffuse.diff(old: old, new: new, comparator: { $0.id == $1.id })
 ```
 
 ### Updating your tableView
-This extensions lets you reload your `UITableView` with the changes given by the outcome of the diff. The parameter `updateDataSource` lets you update your tableView's datasource.
+This extension lets you reload your `UITableView` with the changes given by the outcome of the diff. The parameter `updateDataSource` lets you update your tableView's datasource.
 
 Note that this method also has a parameter for selecting which section within the tableView these changes should be applied to. If not specified it uses section `0`.
 
