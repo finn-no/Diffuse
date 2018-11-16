@@ -18,6 +18,7 @@
 		CF8C77B4219989E600E5FC1D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B3219989E600E5FC1D /* Item.swift */; };
 		CF8C77B621998C0500E5FC1D /* DiffuseHashableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */; };
 		CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B72199CD7800E5FC1D /* Move.swift */; };
+		DA5E0A11219EE3B300CFD283 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5E0A10219EE3B300CFD283 /* Element.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		CF8C77B3219989E600E5FC1D /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseHashableTests.swift; sourceTree = "<group>"; };
 		CF8C77B72199CD7800E5FC1D /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		DA5E0A10219EE3B300CFD283 /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				08D8B2F921932F9000EA22CC /* IndexPathResult.swift */,
 				CF8C77B3219989E600E5FC1D /* Item.swift */,
 				CF8C77B72199CD7800E5FC1D /* Move.swift */,
+				DA5E0A10219EE3B300CFD283 /* Element.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */,
 				08D8B2F821932D8400EA22CC /* UITableViewExtensions.swift in Sources */,
 				CF8C77B4219989E600E5FC1D /* Item.swift in Sources */,
+				DA5E0A11219EE3B300CFD283 /* Element.swift in Sources */,
 				08D8B2FA21932F9000EA22CC /* IndexPathResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
