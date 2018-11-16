@@ -11,6 +11,7 @@ identifier_name:
   excluded:
     - x
     - y
+    - i
     - to
 cyclomatic_complexity: 10
 
