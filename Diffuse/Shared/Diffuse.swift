@@ -70,6 +70,15 @@ public struct Diffuse {
         return CollectionChanges(inserted: insertedItems, removed: removedItems, moved: movedItems, updated: updatedItems)
     }
 
+    /// Algorithm to find which operations to perform in order to turn the 'old' array into 'new'
+    ///
+    /// This algorithm is aimed for batch updates on table views and collection views
+    /// and it assumes that both 'old' and 'new' only contains unique items.
+    ///
+    /// - Parameters:
+    ///     - old: Array containing elements pre update
+    ///     - new: Array containing elementes post update
+    ///
     public static func diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
         // 1 - We can return early in some cases
         if old.isEmpty { return CollectionChanges(inserted: Array(0..<new.count)) }
@@ -84,7 +93,7 @@ public struct Diffuse {
         var moved = [Move<Int>]()
         var updated = [Int]()
 
-        // We can't remove more items than the amount of element in 'old'
+        // We can't remove more items than the amount of element in 'old' etc.
         removed.reserveCapacity(old.count)
         moved.reserveCapacity(minSize)
         updated.reserveCapacity(minSize)
@@ -108,12 +117,12 @@ public struct Diffuse {
 
         // 4 - Iterate the 'new' array and compare against elements in 'oldSet'
         for i in startIndex ..< new.count {
-            // 4.1 - Need to create elements to compare elements in the 'oldSet'
+            // 4.1 - Need to create elements to compare elements in 'oldSet'
             let element = Element(value: new[i], index: i)
 
-            // 4.2 - Search for 'element' in the 'oldSet'
+            // 4.2 - Search for 'element' in 'oldSet'
             if let movedElement = oldSet.remove(element) {
-                // If we find 'element' in the 'oldSet', it could have been moved
+                // If we find 'element' in 'oldSet', it could have been moved
                 // 'element' has only moved if the index has changed
                 if movedElement.index != i {
                     // The indeces are different so 'element' has moved
