@@ -86,7 +86,7 @@ private enum Algorithm: String, CaseIterable {
     func diffFunction(old: [Int], new: [Int]) -> () -> Void {
         switch self {
         case .diffuse:
-            return { _ = diff(old: old, new: new) }
+            return { _ = Diffuse.diff(old: old, new: new) }
         case .differific:
             return { _ = DiffManager().diff(old, new) }
         case .deepDiff:
