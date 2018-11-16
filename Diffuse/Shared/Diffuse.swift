@@ -70,73 +70,83 @@ public struct Diffuse {
         return CollectionChanges(inserted: insertedItems, removed: removedItems, moved: movedItems, updated: updatedItems)
     }
 
+    /// Algorithm to find which operations to perform in order to turn the 'old' array into 'new'
+    ///
+    /// This algorithm is aimed for batch updates on table views and collection views
+    /// and it assumes that both 'old' and 'new' only contains unique items.
+    ///
+    /// - Parameters:
+    ///     - old: Array containing elements pre update
+    ///     - new: Array containing elementes post update
+    ///
     public static func diff<T: Hashable>(old: [T], new: [T]) -> CollectionChanges {
-        // 1. Early return if either the new or the old array is empty.
-        if new.isEmpty {
-            let removed = old.enumerated().map({ offset, _ in return offset })
-            return CollectionChanges(removed: removed)
-        } else if old.isEmpty {
-            let inserted = new.enumerated().map({ offset, _ in return offset })
-            return CollectionChanges(inserted: inserted)
-        }
+        // 1 - We can return early in some cases
+        if old.isEmpty { return CollectionChanges(inserted: Array(0..<new.count)) }
+        if new.isEmpty { return CollectionChanges(removed: Array(0..<old.count)) }
 
-        // 2. Map both arrays to sets of `Item<T>` type.
-        let oldSet = Set(old.enumerated().map { offset, element in
-            return Item(value: element, offset: offset, isNew: false)
-        })
+        // This is useful when reserving memory
+        let minSize = min(old.count, new.count)
 
-        let newSet = Set(new.enumerated().map { offset, element in
-            return Item(value: element, offset: offset, isNew: true)
-        })
-
-        // 3. Get an array with the elements that are either in the new set or in the old set, but not in both.
-        // 4. Sort by offset where old items come first.
-        let difference = Array(newSet.symmetricDifference(oldSet)).sorted(by: {
-            if $0.isNew == $1.isNew {
-                return $0.offset < $1.offset
-            }
-            return !$0.isNew && $1.isNew
-        })
-
-        var newItems = [Item<T>]()
-        var oldChanges = [T: Int]() // [Value: Change]
-        var oldValues = [Int: T]() // [Offset: Value]
+        // Setup the arrays for all the operations
+        var inserted = Set<Int>(minimumCapacity: new.count) // Make inserted a set for now, makes it faster to find updated elements
+        var removed = [Int]()
         var moved = [Move<Int>]()
         var updated = [Int]()
-        var inserted = [Int]()
 
-        // 5. Iterate over the array of differences (remember that it's sorted, so the old items come first).
-        for item in difference {
-            if item.isNew {
-                if let offset = oldChanges[item.value] {
-                    // 5.1. MOVE - if the given value exists both in the new and the old sets of changes.
-                    moved.append(Move(from: offset, to: item.offset))
-                    oldChanges.removeValue(forKey: item.value)
-                    oldValues.removeValue(forKey: offset)
-                } else {
-                    newItems.append(item)
+        // We can't remove more items than the amount of element in 'old' etc.
+        removed.reserveCapacity(old.count)
+        moved.reserveCapacity(minSize)
+        updated.reserveCapacity(minSize)
+
+        // 2 - Skip all the equal elements in the beginning of the arrays
+        // swiftlint:disable for_where
+        var startIndex = 0
+        for i in 0..<minSize {
+            if new[i] != old[i] {
+                // These are the first two elements which are different
+                startIndex = i
+                break
+            }
+        }
+
+        // 3 - Make the old array a set for fast lookup on values
+        var oldSet = Set<Element<T>>(minimumCapacity: old.count)
+        for i in startIndex..<old.count {
+            oldSet.insert(Element(value: old[i], index: i))
+        }
+
+        // 4 - Iterate the 'new' array and compare against elements in 'oldSet'
+        for i in startIndex ..< new.count {
+            // 4.1 - Need to create elements to compare elements in 'oldSet'
+            let element = Element(value: new[i], index: i)
+
+            // 4.2 - Search for 'element' in 'oldSet'
+            if let movedElement = oldSet.remove(element) {
+                // If we find 'element' in 'oldSet', it could have been moved
+                // 'element' has only moved if the index has changed
+                if movedElement.index != i {
+                    // The indeces are different so 'element' has moved
+                    moved.append((from: movedElement.index, to: element.index))
                 }
             } else {
-                // 5.2. REMOVE - Assume that the old item has been removed.
-                oldChanges[item.value] = item.offset
-                // Set value for the given offset (used for checking for updates leter).
-                oldValues[item.offset] = item.value
+                // If 'element' is not in 'oldSet' is has been inserted into the 'new' array
+                inserted.insert(i)
             }
         }
 
-        // 6. Iterate over the array of new items (extracted from the array of differences).
-        for item in newItems {
-            if let value = oldValues[item.offset] {
-                // 6.1. UPDATE - if the given offset exists both in the new and the old sets of changes.
-                updated.append(item.offset)
-                oldChanges.removeValue(forKey: value)
-                oldValues.removeValue(forKey: item.offset)
+        // 5 - Find elements that are updated
+        for element in oldSet {
+            if let update = inserted.remove(element.index) {
+                // If we find 'element.index' in 'inserted', there has been a remove and insert at the same index
+                // and we can consider 'element' as updated
+                updated.append(update)
             } else {
-                // 6.2. INSERT - if neither value nor offset exists in the old set of changes.
-                inserted.append(item.offset)
+                // If 'element.index' is not in 'inserted' it has been removed from 'old'
+                removed.append(element.index)
             }
         }
 
-        return CollectionChanges(inserted: inserted, removed: Array(oldChanges.values), moved: moved, updated: updated)
+        // 6 - Convert 'inserted' to an array and return with the other operations
+        return CollectionChanges(inserted: [Int](inserted), removed: removed, moved: moved, updated: updated)
     }
 }
