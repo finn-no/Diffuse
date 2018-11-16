@@ -64,7 +64,7 @@ let changes = Diffuse.diff(old: old, new: new, comparator: { $0.id == $1.id })
 ```
 
 ### Updating your table- or collectionView
-These extensions lets you reload your `UITableView` or `UICollectionView` with the changes given by the outcome of the diff. The parameter `updateDataSource` lets you update your datasource before the changes are applied to the view.
+These extensions let you reload your `UITableView` or `UICollectionView` with the changes given by the outcome of the diff. The parameter `updateDataSource` lets you update your datasource before the changes are applied to the view.
 
 Note that this method also has a parameter for selecting which section within the table- or collectionview these changes should be applied to. If not specified it defaults to section `0`.
 
