@@ -10,7 +10,7 @@
 - 🚚 indices that has **moved**
 - ♻️ indices that has been **updated**
 
-🎁 We've also included an extension for `UITableView` so you can easily reload it with the changes from the diff!
+🎁 We've also included extensions for `UITableView` and `UICollectionView` so you can easily reload them with the changes from the diff!
 
 Currently we have two different methods, each with their own algorithm. They both have pros and cons, depending on your usecase. See the description of both in section [`Differences in algorithms`](#differences-in-algorithms).
 
@@ -63,10 +63,10 @@ let new = [a, c, b]
 let changes = Diffuse.diff(old: old, new: new, comparator: { $0.id == $1.id })
 ```
 
-### Updating your tableView
-This extension lets you reload your `UITableView` with the changes given by the outcome of the diff. The parameter `updateDataSource` lets you update your tableView's datasource.
+### Updating your table- or collectionView
+These extensions let you reload your `UITableView` or `UICollectionView` with the changes given by the outcome of the diff. The parameter `updateDataSource` lets you update your datasource before the changes are applied to the view.
 
-Note that this method also has a parameter for selecting which section within the tableView these changes should be applied to. If not specified it uses section `0`.
+Note that this method also has a parameter for selecting which section within the table- or collectionview these changes should be applied to. If not specified it defaults to section `0`.
 
 ```swift
 let old = dataSource.models
@@ -75,9 +75,11 @@ let changes = Diffuse.diff(old: old, new: new)
 
 // Reload items in section 0.
 tableView.reload(with: changes, updateDataSource: { dataSource.models = new })
+collectionView.reload(with: changes, updateDataSource: { dataSource.models = new })
 
 // Reload items in section 1.
 tableView.reload(with: changes, section: 1, updateDataSource: { dataSource.models = new })
+collectionView.reload(with: changes, section: 1, updateDataSource: { dataSource.models = new })
 ```
 
 ## Differences in algorithms
