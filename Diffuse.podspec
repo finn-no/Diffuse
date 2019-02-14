@@ -17,15 +17,15 @@ Pod::Spec.new do |s|
   s.platforms        = { :ios => '9.0', :osx => '10.14' }
   s.requires_arc     = true
   s.swift_version    = '4.2'
-  s.default_subspec  = 'Diffuse/UIKitExtensions'
+  s.default_subspec  = 'DiffuseUIKit'
 
   s.subspec 'Core' do |sp|
     sp.source_files = "Diffuse/Shared/**/*.swift"
     sp.frameworks   = 'Foundation'
   end
 
-  s.subspec 'UIKitExtensions' do |sp|
-    sp.dependency 'Diffuse/Core'
+  s.subspec 'DiffuseUIKit' do |sp|
+    sp.dependency 'Core'
     sp.source_files = "Diffuse/UIKitExtensions/**/*.swift"
     sp.frameworks   = 'UIKit'
   end
