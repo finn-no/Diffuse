@@ -14,17 +14,18 @@ Pod::Spec.new do |s|
   - indices that has been updated
                    DESC
   s.license          = 'MIT'
-  s.platforms        = { :ios => '9.0', :osx => '10.14' }
   s.requires_arc     = true
   s.swift_version    = '4.2'
   s.default_subspec  = 'UIKit'
 
   s.subspec 'Core' do |sp|
+    sp.platforms    = { :ios => '9.0', :osx => '10.14' }
     sp.source_files = "Diffuse/Shared/**/*.swift"
     sp.frameworks   = 'Foundation'
   end
 
   s.subspec 'UIKit' do |sp|
+    sp.platform     = :ios
     sp.dependency 'Diffuse/Core'
     sp.source_files = "Diffuse/UIKitExtensions/**/*.swift"
     sp.frameworks   = 'UIKit'
