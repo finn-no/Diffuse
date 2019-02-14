@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Diffuse'
   s.summary          = 'A library that aims to simplify the diffing of two collections'
-  s.version          = '0.2.0'
+  s.version          = '0.1.0'
   s.author           = 'FINN.no'
   s.homepage         = 'https://github.com/finn-no/Diffuse'
   s.social_media_url = 'https://twitter.com/FINN_tech'
