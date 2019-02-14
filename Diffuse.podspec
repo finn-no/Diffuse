@@ -19,13 +19,13 @@ Pod::Spec.new do |s|
   s.swift_version    = '4.2'
   s.default_subspec  = 'DiffuseUIKit'
 
-  s.subspec 'Core' do |sp|
+  s.subspec 'DiffuseCore' do |sp|
     sp.source_files = "Diffuse/Shared/**/*.swift"
     sp.frameworks   = 'Foundation'
   end
 
   s.subspec 'DiffuseUIKit' do |sp|
-    sp.dependency 'Core'
+    sp.dependency 'DiffuseCore'
     sp.source_files = "Diffuse/UIKitExtensions/**/*.swift"
     sp.frameworks   = 'UIKit'
   end
