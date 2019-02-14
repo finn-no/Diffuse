@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0873B3D8219C710E00794869 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0873B3D7219C710E00794869 /* UICollectionViewExtensions.swift */; };
 		08D8B2BD2192D8C500EA22CC /* Diffuse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D8B2B32192D8C500EA22CC /* Diffuse.framework */; };
 		08D8B2C22192D8C500EA22CC /* DiffuseComparatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2C12192D8C500EA22CC /* DiffuseComparatorTests.swift */; };
 		08D8B2C42192D8C500EA22CC /* Diffuse.h in Headers */ = {isa = PBXBuildFile; fileRef = 08D8B2B62192D8C500EA22CC /* Diffuse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08D8B2E22192E0FA00EA22CC /* Diffuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2DF2192E0F900EA22CC /* Diffuse.swift */; };
 		08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */; };
-		08D8B2F821932D8400EA22CC /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2F721932D8400EA22CC /* UITableViewExtensions.swift */; };
 		08D8B2FA21932F9000EA22CC /* IndexPathResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2F921932F9000EA22CC /* IndexPathResult.swift */; };
+		C8FD0C6A2215CD1E006EEC4D /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FD0C682215CD1E006EEC4D /* UITableViewExtensions.swift */; };
+		C8FD0C6B2215CD1E006EEC4D /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FD0C692215CD1E006EEC4D /* UICollectionViewExtensions.swift */; };
 		CF8C77B621998C0500E5FC1D /* DiffuseHashableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */; };
 		CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B72199CD7800E5FC1D /* Move.swift */; };
 		CFCB17B9219C514900F005FB /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCB17B8219C514900F005FB /* Element.swift */; };
@@ -32,7 +32,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0873B3D7219C710E00794869 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
 		08D8B2B32192D8C500EA22CC /* Diffuse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Diffuse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		08D8B2B62192D8C500EA22CC /* Diffuse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Diffuse.h; sourceTree = "<group>"; };
 		08D8B2B72192D8C500EA22CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -42,8 +41,9 @@
 		08D8B2DF2192E0F900EA22CC /* Diffuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Diffuse.swift; sourceTree = "<group>"; };
 		08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionChanges.swift; sourceTree = "<group>"; };
 		08D8B2EC21930CAB00EA22CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		08D8B2F721932D8400EA22CC /* UITableViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
 		08D8B2F921932F9000EA22CC /* IndexPathResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPathResult.swift; sourceTree = "<group>"; };
+		C8FD0C682215CD1E006EEC4D /* UITableViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
+		C8FD0C692215CD1E006EEC4D /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
 		CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseHashableTests.swift; sourceTree = "<group>"; };
 		CF8C77B72199CD7800E5FC1D /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		CFCB17B8219C514900F005FB /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 				08D8B2B62192D8C500EA22CC /* Diffuse.h */,
 				08D8B2B72192D8C500EA22CC /* Info.plist */,
 				08D8B2DE2192E0ED00EA22CC /* Shared */,
-				08D8B2F621932D6900EA22CC /* Extensions */,
+				C8FD0C672215CD1E006EEC4D /* UIKitExtensions */,
 			);
 			path = Diffuse;
 			sourceTree = "<group>";
@@ -130,13 +130,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		08D8B2F621932D6900EA22CC /* Extensions */ = {
+		C8FD0C672215CD1E006EEC4D /* UIKitExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				08D8B2F721932D8400EA22CC /* UITableViewExtensions.swift */,
-				0873B3D7219C710E00794869 /* UICollectionViewExtensions.swift */,
+				C8FD0C682215CD1E006EEC4D /* UITableViewExtensions.swift */,
+				C8FD0C692215CD1E006EEC4D /* UICollectionViewExtensions.swift */,
 			);
-			path = Extensions;
+			path = UIKitExtensions;
 			sourceTree = "<group>";
 		};
 		DA5E0A14219EE8AE00CFD283 /* Models */ = {
@@ -280,9 +280,9 @@
 				CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */,
 				08D8B2E22192E0FA00EA22CC /* Diffuse.swift in Sources */,
 				CFCB17B9219C514900F005FB /* Element.swift in Sources */,
+				C8FD0C6B2215CD1E006EEC4D /* UICollectionViewExtensions.swift in Sources */,
+				C8FD0C6A2215CD1E006EEC4D /* UITableViewExtensions.swift in Sources */,
 				08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */,
-				0873B3D8219C710E00794869 /* UICollectionViewExtensions.swift in Sources */,
-				08D8B2F821932D8400EA22CC /* UITableViewExtensions.swift in Sources */,
 				08D8B2FA21932F9000EA22CC /* IndexPathResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
