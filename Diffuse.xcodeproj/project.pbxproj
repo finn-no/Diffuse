@@ -13,8 +13,8 @@
 		08D8B2E22192E0FA00EA22CC /* Diffuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2DF2192E0F900EA22CC /* Diffuse.swift */; };
 		08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */; };
 		08D8B2FA21932F9000EA22CC /* IndexPathResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D8B2F921932F9000EA22CC /* IndexPathResult.swift */; };
-		C8FD0C6A2215CD1E006EEC4D /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FD0C682215CD1E006EEC4D /* UITableViewExtensions.swift */; };
-		C8FD0C6B2215CD1E006EEC4D /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FD0C692215CD1E006EEC4D /* UICollectionViewExtensions.swift */; };
+		C828026E2248F3FF002EA190 /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C828026C2248F3FF002EA190 /* UITableViewExtensions.swift */; };
+		C828026F2248F3FF002EA190 /* UICollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C828026D2248F3FF002EA190 /* UICollectionViewExtensions.swift */; };
 		CF8C77B621998C0500E5FC1D /* DiffuseHashableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */; };
 		CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF8C77B72199CD7800E5FC1D /* Move.swift */; };
 		CFCB17B9219C514900F005FB /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFCB17B8219C514900F005FB /* Element.swift */; };
@@ -42,8 +42,8 @@
 		08D8B2E12192E0FA00EA22CC /* CollectionChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionChanges.swift; sourceTree = "<group>"; };
 		08D8B2EC21930CAB00EA22CC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		08D8B2F921932F9000EA22CC /* IndexPathResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPathResult.swift; sourceTree = "<group>"; };
-		C8FD0C682215CD1E006EEC4D /* UITableViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
-		C8FD0C692215CD1E006EEC4D /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
+		C828026C2248F3FF002EA190 /* UITableViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
+		C828026D2248F3FF002EA190 /* UICollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtensions.swift; sourceTree = "<group>"; };
 		CF8C77B521998C0500E5FC1D /* DiffuseHashableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffuseHashableTests.swift; sourceTree = "<group>"; };
 		CF8C77B72199CD7800E5FC1D /* Move.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		CFCB17B8219C514900F005FB /* Element.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Element.swift; sourceTree = "<group>"; };
@@ -94,7 +94,7 @@
 				08D8B2B62192D8C500EA22CC /* Diffuse.h */,
 				08D8B2B72192D8C500EA22CC /* Info.plist */,
 				08D8B2DE2192E0ED00EA22CC /* Shared */,
-				C8FD0C672215CD1E006EEC4D /* UIKitExtensions */,
+				C828026B2248F3FF002EA190 /* iOS */,
 			);
 			path = Diffuse;
 			sourceTree = "<group>";
@@ -130,13 +130,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C8FD0C672215CD1E006EEC4D /* UIKitExtensions */ = {
+		C828026B2248F3FF002EA190 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				C8FD0C682215CD1E006EEC4D /* UITableViewExtensions.swift */,
-				C8FD0C692215CD1E006EEC4D /* UICollectionViewExtensions.swift */,
+				C828026C2248F3FF002EA190 /* UITableViewExtensions.swift */,
+				C828026D2248F3FF002EA190 /* UICollectionViewExtensions.swift */,
 			);
-			path = UIKitExtensions;
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		DA5E0A14219EE8AE00CFD283 /* Models */ = {
@@ -280,8 +280,8 @@
 				CF8C77B82199CD7800E5FC1D /* Move.swift in Sources */,
 				08D8B2E22192E0FA00EA22CC /* Diffuse.swift in Sources */,
 				CFCB17B9219C514900F005FB /* Element.swift in Sources */,
-				C8FD0C6B2215CD1E006EEC4D /* UICollectionViewExtensions.swift in Sources */,
-				C8FD0C6A2215CD1E006EEC4D /* UITableViewExtensions.swift in Sources */,
+				C828026F2248F3FF002EA190 /* UICollectionViewExtensions.swift in Sources */,
+				C828026E2248F3FF002EA190 /* UITableViewExtensions.swift in Sources */,
 				08D8B2E42192E0FA00EA22CC /* CollectionChanges.swift in Sources */,
 				08D8B2FA21932F9000EA22CC /* IndexPathResult.swift in Sources */,
 			);
