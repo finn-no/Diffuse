@@ -16,18 +16,9 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.requires_arc     = true
   s.swift_version    = '4.2'
-  s.default_subspec  = 'UIKit'
-
-  s.subspec 'Core' do |sp|
-    sp.platforms    = { :ios => '9.0', :osx => '10.14' }
-    sp.source_files = "Diffuse/Shared/**/*.swift"
-    sp.frameworks   = 'Foundation'
-  end
-
-  s.subspec 'UIKit' do |sp|
-    sp.platform     = :ios
-    sp.dependency 'Diffuse/Core'
-    sp.source_files = "Diffuse/UIKitExtensions/**/*.swift"
-    sp.frameworks   = 'UIKit'
-  end
+  s.platforms        = { :ios => '9.0', :osx => '10.14' }
+  s.ios.source_files = 'Diffuse/{iOS,Shared}/**/*'
+  s.ios.frameworks   = 'Foundation', 'UIKit'
+  s.osx.source_files = 'Diffuse/Shared/**/*'
+  s.osx.frameworks   = 'Foundation'
 end
