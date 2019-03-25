@@ -14,9 +14,11 @@ Pod::Spec.new do |s|
   - indices that has been updated
                    DESC
   s.license          = 'MIT'
-  s.platform         = :ios, '9.0'
+  s.platforms        = { :ios => '9.0', :osx => '10.14' }
   s.requires_arc     = true
   s.swift_version    = '4.2'
-  s.source_files     = 'Diffuse/**/*.swift'
-  s.frameworks       = 'Foundation', 'UIKit'
+  s.ios.source_files = 'Diffuse/{iOS,Shared}/**/*'
+  s.ios.frameworks   = 'Foundation', 'UIKit'
+  s.osx.source_files = 'Diffuse/Shared/**/*'
+  s.osx.frameworks   = 'Foundation'
 end
