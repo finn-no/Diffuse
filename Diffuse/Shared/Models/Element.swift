@@ -6,8 +6,8 @@ struct Element<T: Hashable>: Hashable {
     let value: T
     let index: Int
 
-    var hashValue: Int {
-        return value.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(value.hashValue)
     }
 
     static func == (lhs: Element<T>, rhs: Element<T>) -> Bool {
